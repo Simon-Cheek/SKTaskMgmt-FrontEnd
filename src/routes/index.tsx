@@ -3,6 +3,9 @@ import { css } from "@emotion/react";
 import { createFileRoute } from "@tanstack/react-router";
 import TaskCard from "../components/TaskCard";
 import { H1, Paragraph } from "../components/Text";
+import TaskCardContainer from "../components/TaskCardContainer";
+import TaskTabs from "../components/TaskTabs";
+import Separator from "../components/Separator";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -54,10 +57,8 @@ function RouteComponent() {
       <div css={contentCss}>
         <H1 customCSS={titleDisplayCss}>Title</H1>
         <TaskDisplay />
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
+        <Separator />
+        <TaskCardContainer />
       </div>
     </div>
   );

@@ -7,8 +7,7 @@ function TaskCard() {
   const cardCss = css`
     display: flex;
     align-items: center;
-    background: #fff;
-    padding: 16px 20px;
+    padding: 16px 32px;
     max-width: 100%;
     border-radius: 0;
     box-shadow: none;

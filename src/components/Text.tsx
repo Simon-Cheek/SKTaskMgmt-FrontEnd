@@ -62,7 +62,7 @@ export function H1({ children, customCSS }: HeadingProps) {
 export function H2({ children, customCSS }: HeadingProps) {
   const h2Style = css`
     font-family: "Montserrat", sans-serif;
-    font-size: 1.7em;
+    font-size: 1.5em;
     font-weight: 700;
     margin: 8px 4px;
     padding: 4px 0;
