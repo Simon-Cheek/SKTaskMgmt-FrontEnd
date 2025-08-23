@@ -4,5 +4,6 @@ export interface Task {
   description?: string;
   assignedTo: string;
   priority: "P1" | "P2" | "P3";
+  assignedDate: Date;
   dueDate: Date;
 }

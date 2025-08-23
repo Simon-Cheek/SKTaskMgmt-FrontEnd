@@ -37,4 +37,9 @@ export const colors: Record<string, string> = {
 
   // ---- Pure White ----
   white: "#FFFFFF",
+
+  // Priority Alert Colors
+  priority1: "#d9534f",
+  priority2: "#f0ad4e",
+  priority3: "#5bc0de",
 };

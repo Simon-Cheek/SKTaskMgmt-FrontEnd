@@ -1,24 +1,16 @@
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import TaskCard from "./TaskCard";
 import TaskTabs from "./TaskTabs";
+import Card from "./Card";
 
 function TaskCardContainer() {
-  const containerCss = css`
-    border-radius: 20px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  `;
-
   return (
-    <div css={containerCss}>
+    <Card>
       <TaskTabs />
       <TaskCard />
       <TaskCard />
       <TaskCard />
       <TaskCard />
-    </div>
+    </Card>
   );
 }
 

@@ -2,6 +2,8 @@
 import { css } from "@emotion/react";
 import TestIcon from "../assets/sIcon.svg";
 import { H4, Paragraph } from "./Text";
+import Separator from "./Separator";
+import { colors } from "../colors";
 
 function TaskCard() {
   const cardCss = css`
@@ -20,7 +22,6 @@ function TaskCard() {
   const iconCss = css`
     width: 40px;
     height: 40px;
-    margin-right: 12px;
     flex-shrink: 0;
   `;
 
@@ -42,10 +43,10 @@ function TaskCard() {
 
   const priorityCss = (priority: "P1" | "P2" | "P3") => css`
     color: ${priority === "P1"
-      ? "#d9534f"
+      ? colors.priority1
       : priority === "P2"
-        ? "#f0ad4e"
-        : "#5bc0de"};
+        ? colors.priority2
+        : colors.priority3};
   `;
 
   const dateCss = css`
@@ -65,6 +66,7 @@ function TaskCard() {
   return (
     <div css={cardCss}>
       <img src={TestIcon} alt="Assigned Icon" css={iconCss} />
+      <Separator direction="vertical" />
       <div css={contentCss}>
         <div css={textBlockCss}>
           <H4 customCSS={nameCss}>{task.name}</H4>
