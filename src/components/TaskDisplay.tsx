@@ -57,7 +57,7 @@ const contentCss = css`
 
 const labelCss = css`
   font-size: 0.85rem;
-  color: #5c6b7a;
+  color: ${colors.gray05};
   font-weight: 600;
 `;
 

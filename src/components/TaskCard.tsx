@@ -51,7 +51,7 @@ function TaskCard() {
 
   const dateCss = css`
     font-size: 0.85em;
-    color: #666;
+    color: ${colors.gray05};
     margin-top: 2px;
   `;
 
