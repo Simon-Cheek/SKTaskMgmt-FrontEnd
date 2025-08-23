@@ -14,7 +14,7 @@ export const Route = createFileRoute("/")({
 const pageWrapperCss = css`
   display: flex;
   justify-content: center;
-  padding: 2em;
+  padding: 1em;
 `;
 
 const contentCss = css`
