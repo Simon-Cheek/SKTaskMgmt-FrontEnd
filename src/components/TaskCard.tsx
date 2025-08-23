@@ -10,36 +10,11 @@ function TaskCard() {
     background: #fff;
     padding: 16px 20px;
     max-width: 100%;
-    transition:
-      box-shadow 0.2s ease,
-      transform 0.1s ease;
-
-    /* Desktop styles */
-    @media (min-width: 601px) {
-      border-radius: 16px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-      border: 1px solid rgba(40, 40, 40, 0.1);
-
-      &:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        transform: translateY(-2px);
-      }
-
-      &:last-of-type {
-        margin-bottom: 0;
-      }
-    }
-
-    /* Mobile styles */
-    @media (max-width: 600px) {
-      border-radius: 0;
-      box-shadow: none;
-      border-bottom: 1px solid #e0e0e0;
-
-      &:last-of-type {
-        border-bottom: none;
-      }
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 1px solid #e0e0e0;
+    &:last-of-type {
+      border-bottom: none;
     }
   `;
 
@@ -63,8 +38,6 @@ function TaskCard() {
   `;
 
   const nameCss = css`
-    font-size: 1.1em;
-    font-weight: 600;
     margin: 0;
   `;
 

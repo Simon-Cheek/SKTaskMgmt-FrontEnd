@@ -50,7 +50,7 @@ interface HeadingProps {
 export function H1({ children, customCSS }: HeadingProps) {
   const h1Style = css`
     font-family: "Montserrat", sans-serif;
-    font-size: 3em;
+    font-size: 2em;
     font-weight: 700;
     margin: 8px 4px;
     padding: 4px 0;
@@ -62,7 +62,7 @@ export function H1({ children, customCSS }: HeadingProps) {
 export function H2({ children, customCSS }: HeadingProps) {
   const h2Style = css`
     font-family: "Montserrat", sans-serif;
-    font-size: 2.5em;
+    font-size: 1.7em;
     font-weight: 700;
     margin: 8px 4px;
     padding: 4px 0;
@@ -74,7 +74,7 @@ export function H2({ children, customCSS }: HeadingProps) {
 export function H3({ children, customCSS }: HeadingProps) {
   const h3Style = css`
     font-family: "Montserrat", sans-serif;
-    font-size: 2em;
+    font-size: 1.4em;
     font-weight: 700;
     margin: 4px 4px;
     padding: 4px 0;
@@ -86,7 +86,7 @@ export function H3({ children, customCSS }: HeadingProps) {
 export function H4({ children, customCSS }: HeadingProps) {
   const h4Style = css`
     font-family: "Montserrat", sans-serif;
-    font-size: 1.5em;
+    font-size: 1.1em;
     font-weight: 700;
     margin: 4px 4px;
     padding: 4px 0;
@@ -98,7 +98,7 @@ export function H4({ children, customCSS }: HeadingProps) {
 export function H5({ children, customCSS }: HeadingProps) {
   const h5Style = css`
     font-family: "Montserrat", sans-serif;
-    font-size: 1.2em;
+    font-size: 0.8em;
     font-weight: 700;
     margin: 0 4px;
     padding: 4px 0;
@@ -110,7 +110,7 @@ export function H5({ children, customCSS }: HeadingProps) {
 export function H6({ children, customCSS }: HeadingProps) {
   const h6Style = css`
     font-family: "Montserrat", sans-serif;
-    font-size: 0.8em;
+    font-size: 0.5em;
     font-weight: 700;
     margin: 0 4px;
     padding: 0;
