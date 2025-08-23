@@ -1,12 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { H4, Paragraph } from "./Text";
-import type { Task } from "../types";
+import type { Priority, Task } from "../types";
 import TaskIcon from "../assets/kIcon.svg";
-import Separator from "./Separator";
-import { formatDate } from "../utils/dateFormat";
 import Card from "./Card";
 import { colors } from "../colors";
+import Separator from "./Separator";
+
+const cardCss = css`
+  padding: 32px 32px;
+`;
 
 const emptyStateCss = css`
   background-color: #fbfeff;
@@ -23,41 +26,23 @@ const emptyStateCss = css`
 const iconCss = css`
   width: 40px;
   height: 40px;
-  flex: 0 0 40px;
   border-radius: 20px;
   box-shadow: 0 1px 4px rgba(10, 20, 80, 0.08);
 `;
 
-const cardCss = css`
-  display: flex;
-  align-items: center;
-  padding: 16px 32px;
-  max-width: 100%;
-  border-radius: 0;
-  box-shadow: none;
-  border-bottom: 1px solid #e0e0e0;
-  &:last-of-type {
-    border-bottom: none;
-  }
-`;
-
-const contentCss = css`
+const taskHeaderCss = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex: 1;
 `;
 
-const textBlockCss = css`
+const leftSectionCss = css`
   display: flex;
-  flex-direction: column;
+  align-items: center;
 `;
 
-const nameCss = css`
-  margin: 0;
-`;
-
-const priorityCss = (priority: "P1" | "P2" | "P3") => css`
+const priorityCss = (priority: Priority) => css`
+  font-weight: bold;
   color: ${priority === "P1"
     ? colors.priority1
     : priority === "P2"
@@ -65,11 +50,64 @@ const priorityCss = (priority: "P1" | "P2" | "P3") => css`
       : colors.priority3};
 `;
 
-const dateCss = css`
-  font-size: 0.85em;
-  color: #666;
-  margin-top: 2px;
+const contentCss = css`
+  display: flex;
+  flex-direction: column;
 `;
+
+const labelCss = css`
+  font-size: 0.85rem;
+  color: #5c6b7a;
+  font-weight: 600;
+`;
+
+const valueCss = css`
+  font-size: 0.95rem;
+  color: #0b1b2b;
+`;
+
+const dateContainerCss = css`
+  display: flex;
+  flex-direction: row;
+`;
+
+function formatDate(date: Date) {
+  try {
+    return date.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+  } catch {
+    const parsed = new Date(date as unknown as string);
+    return isNaN(parsed.getTime())
+      ? "—"
+      : parsed.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+        });
+  }
+}
+
+function TaskHeader({
+  title,
+  priority,
+}: {
+  title: string;
+  priority: Priority;
+}) {
+  return (
+    <div css={taskHeaderCss}>
+      <div css={leftSectionCss}>
+        <img src={TaskIcon} alt="Task Icon" css={iconCss} />
+        <Separator direction="vertical" />
+        <H4>{title}</H4>
+      </div>
+      <Paragraph customCSS={priorityCss(priority)}>{priority}</Paragraph>
+    </div>
+  );
+}
 
 function TaskDisplay({ task }: { task?: Task | null }) {
   return !task ? (
@@ -77,20 +115,30 @@ function TaskDisplay({ task }: { task?: Task | null }) {
       <Paragraph>Select a Task to View Details</Paragraph>
     </div>
   ) : (
-    <Card>
-      <div css={cardCss}>
-        <img src={TaskIcon} alt="Assigned Icon" css={iconCss} />
-        <Separator direction="vertical" />
-        <div css={contentCss}>
-          <div css={textBlockCss}>
-            <H4 customCSS={nameCss}>{task.name}</H4>
-            <Paragraph customCSS={dateCss}>
+    <Card customCSS={cardCss}>
+      <TaskHeader title={task.name} priority={task.priority} />
+      <Separator />
+      <div css={contentCss}>
+        <div>
+          <Paragraph>
+            {task.description?.trim() || "No description provided."}
+          </Paragraph>
+        </div>
+        <Separator />
+        <div css={dateContainerCss}>
+          <div>
+            <Paragraph customCSS={labelCss}>Due Date</Paragraph>
+            <Paragraph customCSS={valueCss}>
               {formatDate(task.dueDate)}
             </Paragraph>
           </div>
-          <Paragraph weight="bold" customCSS={priorityCss(task.priority)}>
-            {task.priority}
-          </Paragraph>
+          <Separator direction="vertical" size="lg" />
+          <div>
+            <Paragraph customCSS={labelCss}>Assigned Date</Paragraph>
+            <Paragraph customCSS={valueCss}>
+              {formatDate(task.assignedDate)}
+            </Paragraph>
+          </div>
         </div>
       </div>
     </Card>

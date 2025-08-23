@@ -22,7 +22,7 @@ const contentCss = css`
   flex-direction: column;
   align-items: stretch;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1100px;
 `;
 
 const titleDisplayCss = css`

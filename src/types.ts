@@ -7,3 +7,5 @@ export interface Task {
   assignedDate: Date;
   dueDate: Date;
 }
+
+export type Priority = "P1" | "P2" | "P3";
