@@ -1,10 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Paragraph } from "../components/Text";
+import TaskCard from "../components/TaskCard";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <Paragraph>Main stuff</Paragraph>;
+  return (
+    <>
+      <TaskCard />
+      <TaskCard />
+      <TaskCard />
+      <TaskCard />
+    </>
+  );
 }

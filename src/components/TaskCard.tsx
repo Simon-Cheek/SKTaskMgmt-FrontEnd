@@ -1,0 +1,109 @@
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
+import TestIcon from "../assets/sIcon.svg";
+import { H4, Paragraph } from "./Text";
+
+function TaskCard() {
+  const cardCss = css`
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 16px 20px;
+    max-width: 100%;
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.1s ease;
+
+    /* Desktop styles */
+    @media (min-width: 601px) {
+      border-radius: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(40, 40, 40, 0.1);
+
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+      }
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+
+    /* Mobile styles */
+    @media (max-width: 600px) {
+      border-radius: 0;
+      box-shadow: none;
+      border-bottom: 1px solid #e0e0e0;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+    }
+  `;
+
+  const iconCss = css`
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+    flex-shrink: 0;
+  `;
+
+  const contentCss = css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+  `;
+
+  const textBlockCss = css`
+    display: flex;
+    flex-direction: column;
+  `;
+
+  const nameCss = css`
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 0;
+  `;
+
+  const priorityCss = (priority: "P1" | "P2" | "P3") => css`
+    color: ${priority === "P1"
+      ? "#d9534f"
+      : priority === "P2"
+        ? "#f0ad4e"
+        : "#5bc0de"};
+  `;
+
+  const dateCss = css`
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 2px;
+  `;
+
+  // Fake task data
+  const task = {
+    name: "Finish Mobile Layout",
+    assignedTo: "John Doe",
+    priority: "P1" as "P1" | "P2" | "P3",
+    dueDate: "Aug 15 2001",
+  };
+
+  return (
+    <div css={cardCss}>
+      <img src={TestIcon} alt="Assigned Icon" css={iconCss} />
+      <div css={contentCss}>
+        <div css={textBlockCss}>
+          <H4 customCSS={nameCss}>{task.name}</H4>
+          <Paragraph customCSS={dateCss}>{task.dueDate}</Paragraph>
+        </div>
+        <Paragraph weight="bold" customCSS={priorityCss(task.priority)}>
+          {task.priority}
+        </Paragraph>
+      </div>
+    </div>
+  );
+}
+
+export default TaskCard;
