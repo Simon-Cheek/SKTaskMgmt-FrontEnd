@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { H1 } from "../components/Text";
+import { H1, Paragraph } from "../components/Text";
 import TaskCardContainer from "../components/TaskCardContainer";
 import Separator from "../components/Separator";
 import TaskDisplay from "../components/TaskDisplay";
 import type { Task } from "../types";
+import { colors } from "../colors";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -25,11 +26,28 @@ const contentCss = css`
   max-width: 1100px;
 `;
 
-const titleDisplayCss = css`
+const displayContainerCss = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  flex-direction: column;
+  height: 200px;
+  @media (max-width: 767px) {
+    height: 120px;
+  }
+`;
+
+const titleDisplayCss = css`
+  text-align: center;
+  color: ${colors.gray06};
+  @media (max-width: 767px) {
+    font-size: 1.5em;
+  }
+`;
+
+const titleDescriptionCss = css`
+  color: ${colors.gray06};
+  font-size: 1.1em;
 `;
 
 const fakeTask: Task = {
@@ -47,7 +65,12 @@ function RouteComponent() {
   return (
     <div css={pageWrapperCss}>
       <div css={contentCss}>
-        <H1 customCSS={titleDisplayCss}>Title</H1>
+        <div css={displayContainerCss}>
+          <H1 customCSS={titleDisplayCss}>SimonChaela Task Management</H1>
+          <Paragraph weight="semibold" customCSS={titleDescriptionCss}>
+            Active Tasks
+          </Paragraph>
+        </div>
         <TaskDisplay task={fakeTask} />
         <Separator />
         <TaskCardContainer />

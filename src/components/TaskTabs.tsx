@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 import { H2 } from "./Text";
 import Btn from "./Button";
 import Separator from "./Separator";
+import { colors } from "../colors";
 
 function TaskTabs() {
   const containerCss = css`
@@ -10,9 +11,8 @@ function TaskTabs() {
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    padding: 12px 0px;
-    margin: 0px 32px;
-    border-bottom: 1px solid #ccd;
+    padding: 12px 24px;
+    border-bottom: 1px solid ${colors.gray03};
 
     @media (max-width: 600px) {
       flex-direction: column;
