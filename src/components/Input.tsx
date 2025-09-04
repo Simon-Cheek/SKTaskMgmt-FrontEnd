@@ -3,34 +3,35 @@ import { css } from "@emotion/react";
 import type { SerializedStyles } from "@emotion/react";
 import { forwardRef } from "react";
 import type { InputHTMLAttributes } from "react";
+import { colors } from "../colors";
 
 const baseInputCss = css`
   padding: 0.7em 1em;
-  border: 1px solid #ddd;
+  border: 1px solid ${colors.gray02};
   border-radius: 1em;
   font-size: 0.95em;
   outline: none;
-  background-color: #fafafa;
+  background-color: ${colors.gray00};
   transition:
-    border-color 0.25s ease,
-    background-color 0.25s ease;
+    border-color 0.3s ease,
+    background-color 0.3s ease;
 
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.08),
     0 2px 6px rgba(0, 0, 0, 0.04);
 
   &:focus {
-    border-color: #4cafef;
-    background-color: #fff;
+    border-color: ${colors.blue03};
+    background-color: ${colors.white};
   }
 
   &::placeholder {
-    color: #999;
+    color: ${colors.gray04};
     transition: color 0.25s ease;
   }
 
   &:focus::placeholder {
-    color: #bbb;
+    color: ${colors.gray03};
   }
 `;
 

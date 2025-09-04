@@ -8,7 +8,6 @@ import Separator from "../Separator";
 const formCss = css`
   display: flex;
   flex-direction: column;
-  gap: 1em;
   width: 100%;
 `;
 
@@ -24,13 +23,14 @@ export function LoginForm() {
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
+      <Separator size="md" />
       <Input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Separator size="md" />
+      <Separator size="xl" />
       <Btn color="blue" type="submit">
         Login
       </Btn>
