@@ -23,11 +23,11 @@ function Separator({
       case "xs":
         return 8;
       case "sm":
-        return 24;
+        return 12;
       case "lg":
-        return 36;
+        return 24;
       case "xl":
-        return 48;
+        return 36;
       default:
         return 16;
     }

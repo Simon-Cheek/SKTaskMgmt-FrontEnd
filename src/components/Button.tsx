@@ -46,7 +46,7 @@ const Btn: React.FC<BtnProps> = ({
           border: 2px solid ${darkerColor};
           color: ${lightButtonTextColor};
           &:hover {
-            background: ${baseColor}1A; /* subtle tint on hover */
+            background: ${baseColor}1A;
           }
         `
       : css`
