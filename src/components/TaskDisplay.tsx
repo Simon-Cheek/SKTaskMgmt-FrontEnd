@@ -22,6 +22,7 @@ const emptyStateCss = css`
   height: 200px;
   width: 100%;
   text-align: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 `;
 
 const iconCss = css`

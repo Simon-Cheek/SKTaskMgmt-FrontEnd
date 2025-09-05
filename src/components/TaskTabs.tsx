@@ -37,20 +37,27 @@ function TaskTabs() {
     font-size: 1em;
   `;
 
+  const btnCss = css`
+    padding: 0.7em 0.8em;
+    font-size: 0.8em;
+  `;
+
   return (
     <div css={containerCss}>
       <H2 customCSS={textCss}>Sort By</H2>
       <Separator direction="vertical" />
       <div css={buttonRowCss}>
-        <Btn color="blue" shade="light">
+        <Btn color="blue" shade="light" customCSS={btnCss}>
           Priority
         </Btn>
         <Separator direction="vertical" />
-        <Btn color="blue" shade="light">
+        <Btn color="blue" shade="light" customCSS={btnCss}>
           Due Date
         </Btn>
         <Separator direction="vertical" />
-        <Btn color="blue">My Tasks</Btn>
+        <Btn color="blue" customCSS={btnCss}>
+          My Tasks
+        </Btn>
       </div>
     </div>
   );
