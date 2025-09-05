@@ -32,7 +32,7 @@ export function LoginForm() {
       />
       <Separator size="xl" />
       <Btn color="blue" type="submit">
-        Login
+        Submit
       </Btn>
     </form>
   );

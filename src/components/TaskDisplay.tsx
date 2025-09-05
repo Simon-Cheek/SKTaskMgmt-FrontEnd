@@ -6,6 +6,7 @@ import TaskIcon from "../assets/kIcon.svg";
 import Card from "./Card";
 import { colors } from "../colors";
 import Separator from "./Separator";
+import Btn from "./Button";
 
 const cardCss = css`
   padding: 32px 32px;
@@ -71,6 +72,18 @@ const dateContainerCss = css`
   flex-direction: row;
 `;
 
+const btnContainerCss = css`
+  display: flex;
+  flex-direction: row;
+`;
+
+const lowerContainerCss = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
 function formatDate(date: Date) {
   try {
     return date.toLocaleDateString(undefined, {
@@ -125,19 +138,26 @@ function TaskDisplay({ task }: { task?: Task | null }) {
           </Paragraph>
         </div>
         <Separator />
-        <div css={dateContainerCss}>
-          <div>
-            <Paragraph customCSS={labelCss}>Due Date</Paragraph>
-            <Paragraph customCSS={valueCss}>
-              {formatDate(task.dueDate)}
-            </Paragraph>
+        <div css={lowerContainerCss}>
+          <div css={dateContainerCss}>
+            <div>
+              <Paragraph customCSS={labelCss}>Due Date</Paragraph>
+              <Paragraph customCSS={valueCss}>
+                {formatDate(task.dueDate)}
+              </Paragraph>
+            </div>
+            <Separator direction="vertical" size="lg" />
+            <div>
+              <Paragraph customCSS={labelCss}>Assigned Date</Paragraph>
+              <Paragraph customCSS={valueCss}>
+                {formatDate(task.assignedDate)}
+              </Paragraph>
+            </div>
           </div>
-          <Separator direction="vertical" size="lg" />
-          <div>
-            <Paragraph customCSS={labelCss}>Assigned Date</Paragraph>
-            <Paragraph customCSS={valueCss}>
-              {formatDate(task.assignedDate)}
-            </Paragraph>
+          <div css={btnContainerCss}>
+            <Btn color="blue">Edit</Btn>
+            <Separator direction="vertical" size="sm" />
+            <Btn color="blue">Delete</Btn>
           </div>
         </div>
       </div>
