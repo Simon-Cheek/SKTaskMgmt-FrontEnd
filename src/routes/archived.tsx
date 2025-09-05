@@ -31,23 +31,16 @@ const displayContainerCss = css`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 200px;
+  height: 100px;
   @media (max-width: 767px) {
-    height: 120px;
+    height: 80px;
   }
 `;
 
 const titleDisplayCss = css`
   text-align: center;
   color: ${colors.gray06};
-  @media (max-width: 767px) {
-    font-size: 1.5em;
-  }
-`;
-
-const titleDescriptionCss = css`
-  color: ${colors.gray06};
-  font-size: 1.1em;
+  font-size: 1.7em;
 `;
 
 // const fakeTask: Task = {
@@ -66,10 +59,7 @@ function RouteComponent() {
     <div css={pageWrapperCss}>
       <div css={contentCss}>
         <div css={displayContainerCss}>
-          <H1 customCSS={titleDisplayCss}>SimonChaela Task Management</H1>
-          <Paragraph weight="semibold" customCSS={titleDescriptionCss}>
-            Archived Tasks
-          </Paragraph>
+          <H1 customCSS={titleDisplayCss}>Archived Tasks</H1>
         </div>
         <TaskDisplay task={null} />
         <Separator />
