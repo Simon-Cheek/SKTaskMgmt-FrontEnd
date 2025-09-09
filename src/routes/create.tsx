@@ -3,6 +3,9 @@ import { css } from "@emotion/react";
 import { createFileRoute } from "@tanstack/react-router";
 import Card from "../components/Card";
 import { useState } from "react";
+import Input from "../components/Input";
+import TextArea from "../components/TextArea";
+import Separator from "../components/Separator";
 
 export const Route = createFileRoute("/create")({
   component: RouteComponent,
@@ -11,8 +14,7 @@ export const Route = createFileRoute("/create")({
 const creationContainerCss = css`
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 800px;
+  margin: 4em 0.75em;
 `;
 
 const creationCardCss = css`
@@ -23,7 +25,7 @@ const creationCardCss = css`
 const formCss = css`
   display: flex;
   flex-direction: column;
-  gap: 1.5em;
+  gap: 1.9em;
 
   .form-field {
     display: flex;
@@ -93,10 +95,11 @@ function RouteComponent() {
     <div css={creationContainerCss}>
       <Card customCSS={creationCardCss}>
         <h2>Create New Task</h2>
+        <Separator />
         <form css={formCss} onSubmit={handleSubmit}>
           <div className="form-field">
             <label htmlFor="taskName">Task Name</label>
-            <input
+            <Input
               id="taskName"
               name="taskName"
               type="text"
@@ -108,7 +111,7 @@ function RouteComponent() {
 
           <div className="form-field">
             <label htmlFor="taskDescription">Task Description</label>
-            <textarea
+            <TextArea
               id="taskDescription"
               name="taskDescription"
               rows={3}
