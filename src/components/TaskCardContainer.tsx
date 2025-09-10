@@ -5,6 +5,8 @@ import TaskTabs from "./TaskTabs";
 import Card from "./Card";
 import Separator from "./Separator";
 import { colors } from "../colors";
+import { useGlobal } from "../state/GlobalContext";
+import { useEffect } from "react";
 
 function TaskCardContainer() {
   const overflowCss = css`
@@ -20,14 +22,28 @@ function TaskCardContainer() {
     border-top: 1px solid ${colors.gray03};
   `;
 
+  const { tasks, setTasks } = useGlobal();
+
+  useEffect(() => {
+    setTasks([
+      {
+        name: "taskName",
+        id: "id",
+        assignedTo: "Kayla",
+        priority: "P1",
+        dueDate: new Date("December 17, 1995 03:24:00"),
+        assignedDate: new Date("December 17, 1995 03:24:00"),
+      },
+    ]);
+  }, []);
+
   return (
     <Card>
       <TaskTabs />
       <div css={overflowCss}>
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
+        {tasks.map((task) => (
+          <TaskCard task={task} />
+        ))}
       </div>
       <Separator customCSS={sepCss} />
     </Card>

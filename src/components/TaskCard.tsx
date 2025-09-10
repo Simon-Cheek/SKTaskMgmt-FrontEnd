@@ -4,8 +4,10 @@ import TestIcon from "../assets/sIcon.svg";
 import { H4, Paragraph } from "./Text";
 import Separator from "./Separator";
 import { colors } from "../colors";
+import type { Task } from "../types";
+import { formatDate } from "../utils/dateFormat";
 
-function TaskCard() {
+function TaskCard({ task }: { task: Task }) {
   const cardCss = css`
     display: flex;
     align-items: center;
@@ -55,22 +57,24 @@ function TaskCard() {
     margin-top: 2px;
   `;
 
-  // Fake task data
-  const task = {
-    name: "Finish Mobile Layout",
-    assignedTo: "John Doe",
-    priority: "P1" as "P1" | "P2" | "P3",
-    dueDate: "Aug 15 2001",
-  };
+  // // Fake task data
+  // const task = {
+  //   name: "Finish Mobile Layout",
+  //   assignedTo: "John Doe",
+  //   priority: "P1" as "P1" | "P2" | "P3",
+  //   dueDate: "Aug 15 2001",
+  // };
 
-  return (
+  return task == null ? (
+    <div />
+  ) : (
     <div css={cardCss}>
       <img src={TestIcon} alt="Assigned Icon" css={iconCss} />
       <Separator direction="vertical" />
       <div css={contentCss}>
         <div css={textBlockCss}>
           <H4 customCSS={nameCss}>{task.name}</H4>
-          <Paragraph customCSS={dateCss}>{task.dueDate}</Paragraph>
+          <Paragraph customCSS={dateCss}>{formatDate(task.dueDate)}</Paragraph>
         </div>
         <Paragraph weight="bold" customCSS={priorityCss(task.priority)}>
           {task.priority}

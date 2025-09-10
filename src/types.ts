@@ -9,3 +9,5 @@ export interface Task {
 }
 
 export type Priority = "P1" | "P2" | "P3";
+
+export type User = { id: string; username: string };
