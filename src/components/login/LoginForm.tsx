@@ -4,6 +4,7 @@ import { useState } from "react";
 import Btn from "../Button";
 import Input from "../Input";
 import Separator from "../Separator";
+import { useGlobal } from "../../state/GlobalContext";
 
 const formCss = css`
   display: flex;
@@ -12,11 +13,12 @@ const formCss = css`
 `;
 
 export function LoginForm() {
+  const { login } = useGlobal();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   return (
-    <form css={formCss} onSubmit={(e) => e.preventDefault()}>
+    <form css={formCss} onSubmit={() => login(username, password)}>
       <Input
         type="text"
         placeholder="Username"

@@ -1,15 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { H1 } from "../components/Text";
 import TaskCardContainer from "../components/TaskCardContainer";
 import Separator from "../components/Separator";
 import TaskDisplay from "../components/TaskDisplay";
-// import type { Task } from "../types";
 import { colors } from "../colors";
 
 export const Route = createFileRoute("/archived")({
   component: RouteComponent,
+
+  // Typing with context is a nightmare
+  beforeLoad: ({ context }: any) => {
+    if (!context.global?.isAuthenticated) {
+      throw redirect({ to: "/login" });
+    }
+  },
 });
 
 const pageWrapperCss = css`

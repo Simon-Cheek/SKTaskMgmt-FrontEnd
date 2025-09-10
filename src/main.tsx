@@ -3,14 +3,21 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
-import { GlobalProvider } from "./state/GlobalContext";
+import { GlobalProvider, useGlobal } from "./state/GlobalContext";
 
-const router = createRouter({ routeTree });
+export const router = createRouter({
+  routeTree,
+});
+
+function App() {
+  const global = useGlobal();
+  return <RouterProvider router={router} context={{ global }} />;
+}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <GlobalProvider>
-      <RouterProvider router={router} />
+      <App />
     </GlobalProvider>
   </StrictMode>
 );
