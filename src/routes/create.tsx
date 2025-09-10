@@ -6,6 +6,7 @@ import { useState } from "react";
 import Input from "../components/Input";
 import TextArea from "../components/TextArea";
 import Separator from "../components/Separator";
+import Select from "../components/Select";
 
 export const Route = createFileRoute("/create")({
   component: RouteComponent,
@@ -95,7 +96,7 @@ function RouteComponent() {
     <div css={creationContainerCss}>
       <Card customCSS={creationCardCss}>
         <h2>Create New Task</h2>
-        <Separator />
+        <Separator size="lg" />
         <form css={formCss} onSubmit={handleSubmit}>
           <div className="form-field">
             <label htmlFor="taskName">Task Name</label>
@@ -122,7 +123,7 @@ function RouteComponent() {
 
           <div className="form-field">
             <label htmlFor="assignee">Assign To</label>
-            <select
+            <Select
               id="assignee"
               name="assignee"
               value={formData.assignee}
@@ -130,7 +131,7 @@ function RouteComponent() {
             >
               <option value="person1">Person 1</option>
               <option value="person2">Person 2</option>
-            </select>
+            </Select>
           </div>
 
           <div className="form-field">
@@ -171,7 +172,7 @@ function RouteComponent() {
 
           <div className="form-field">
             <label htmlFor="dueDate">Due Date</label>
-            <input
+            <Input
               id="dueDate"
               name="dueDate"
               type="date"

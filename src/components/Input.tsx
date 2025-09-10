@@ -10,6 +10,7 @@ const baseInputCss = css`
   border: 1px solid ${colors.gray02};
   border-radius: 1em;
   font-size: 0.95em;
+  font-family: "Montserrat", sans-serif;
   outline: none;
   background-color: ${colors.gray00};
   transition:
