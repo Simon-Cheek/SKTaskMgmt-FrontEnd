@@ -16,9 +16,13 @@ export function LoginForm() {
   const { login } = useGlobal();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    login(username, password);
+  };
 
   return (
-    <form css={formCss} onSubmit={() => login(username, password)}>
+    <form css={formCss} onSubmit={formSubmit}>
       <Input
         type="text"
         placeholder="Username"

@@ -1,5 +1,5 @@
 // src/context/GlobalContext.tsx
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
 import type { GlobalContextType, Task, User } from "../types";
 
@@ -14,8 +14,8 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
       const u = { id: "1", username };
       setUser(u);
       localStorage.setItem("user", JSON.stringify(u));
+      setTimeout(() => console.log(user), 1000);
     } else {
-      console.log("Wrong");
       throw new Error("Invalid credentials");
     }
   }

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import Card from "../components/Card";
 import { useState } from "react";
 import Input from "../components/Input";
@@ -10,6 +10,13 @@ import Select from "../components/Select";
 
 export const Route = createFileRoute("/edit")({
   component: RouteComponent,
+
+  // Typing with context is a nightmare
+  beforeLoad: ({ context }: any) => {
+    if (!context.global?.isAuthenticated) {
+      throw redirect({ to: "/login" });
+    }
+  },
 });
 
 const creationContainerCss = css`
