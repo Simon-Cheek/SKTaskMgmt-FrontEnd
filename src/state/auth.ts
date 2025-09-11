@@ -18,5 +18,5 @@ export const authenticate = (
 };
 
 export const deauthenticate = () => {
-  localStorage.clearItem("SK-user");
+  localStorage.removeItem("SK-user");
 };
