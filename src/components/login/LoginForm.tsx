@@ -5,6 +5,7 @@ import Btn from "../Button";
 import Input from "../Input";
 import Separator from "../Separator";
 import { useGlobal } from "../../state/GlobalContext";
+import { useNavigate } from "@tanstack/react-router";
 
 const formCss = css`
   display: flex;
@@ -16,9 +17,11 @@ export function LoginForm() {
   const { login } = useGlobal();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+  const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login(username, password);
+    await login(username, password);
+    navigate({ to: "/" });
   };
 
   return (

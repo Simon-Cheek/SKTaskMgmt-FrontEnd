@@ -14,7 +14,6 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
       const u = { id: "1", username };
       setUser(u);
       localStorage.setItem("user", JSON.stringify(u));
-      setTimeout(() => console.log(user), 1000);
     } else {
       throw new Error("Invalid credentials");
     }
