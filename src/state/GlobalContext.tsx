@@ -2,6 +2,7 @@
 import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
 import type { GlobalContextType, Task, User } from "../types";
+import { authenticate, deauthenticate } from "./auth";
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
@@ -10,18 +11,16 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   async function login(username: string, password: string) {
-    if (username === "test" && password === "password") {
-      const u = { id: "1", username };
-      setUser(u);
-      localStorage.setItem("user", JSON.stringify(u));
-    } else {
-      throw new Error("Invalid credentials");
+    const user: User | null = authenticate(username, password);
+    if (user == null) {
+      throw new Error("Login Failed");
     }
+    setUser(user);
   }
 
   function logout() {
+    deauthenticate();
     setUser(null);
-    localStorage.removeItem("user");
   }
 
   return (
