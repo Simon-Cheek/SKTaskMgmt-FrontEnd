@@ -31,5 +31,3 @@ STATE MANAGEMENT CHECKLIST:
   - Redirect afterwards?
 - Edit
   - Edit actually edits a task
-- Login
-  - Handle incorrect login logic
