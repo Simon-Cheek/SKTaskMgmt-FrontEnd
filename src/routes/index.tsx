@@ -2,9 +2,9 @@
 import { css } from "@emotion/react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { H1, Paragraph } from "../components/Text";
-import TaskCardContainer from "../components/TaskCardContainer";
+import TaskCardContainer from "../components/taskComponents/TaskCardContainer";
 import Separator from "../components/Separator";
-import TaskDisplay from "../components/TaskDisplay";
+import TaskDisplay from "../components/taskComponents/TaskDisplay";
 import type { Task } from "../types";
 import { colors } from "../colors";
 

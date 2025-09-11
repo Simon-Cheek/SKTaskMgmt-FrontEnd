@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import TestIcon from "../assets/sIcon.svg";
-import { H4, Paragraph } from "./Text";
-import Separator from "./Separator";
-import { colors } from "../colors";
-import type { Task } from "../types";
-import { formatDate } from "../utils/dateFormat";
+import { H4, Paragraph } from "../Text";
+import Separator from "../Separator";
+import { colors } from "../../colors";
+import type { Task } from "../../types";
+import { formatDate } from "../../utils/dateFormat";
+import { UserIcon } from "../UserIcon";
 
 function TaskCard({ task }: { task: Task }) {
   const cardCss = css`
@@ -57,19 +57,11 @@ function TaskCard({ task }: { task: Task }) {
     margin-top: 2px;
   `;
 
-  // // Fake task data
-  // const task = {
-  //   name: "Finish Mobile Layout",
-  //   assignedTo: "John Doe",
-  //   priority: "P1" as "P1" | "P2" | "P3",
-  //   dueDate: "Aug 15 2001",
-  // };
-
   return task == null ? (
     <div />
   ) : (
     <div css={cardCss}>
-      <img src={TestIcon} alt="Assigned Icon" css={iconCss} />
+      <img src={UserIcon(task.assignedTo)} alt="Assigned Icon" css={iconCss} />
       <Separator direction="vertical" />
       <div css={contentCss}>
         <div css={textBlockCss}>

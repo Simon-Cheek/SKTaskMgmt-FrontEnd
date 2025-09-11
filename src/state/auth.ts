@@ -1,20 +1,19 @@
 import type { User } from "../types";
-
-const user: User = {
-  id: "userId",
-  username: "username",
-};
+import { mockRegisteredUsers as users } from "./users";
 
 export const authenticate = (
   username: String,
   password: String
 ): User | null => {
-  if (username === "test" && password === "password") {
-    localStorage.setItem("SK-user", JSON.stringify(user));
-    return user;
-  } else {
-    throw new Error("Invalid credentials");
+  if (password != "password") {
+    return null;
   }
+  for (const user of users) {
+    if (username == user.username) {
+      return user;
+    }
+  }
+  return null;
 };
 
 export const deauthenticate = () => {

@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { H2 } from "./Text";
-import Btn from "./Button";
-import Separator from "./Separator";
-import { colors } from "../colors";
+import { H2 } from "../Text";
+import Btn from "../Button";
+import Separator from "../Separator";
+import { colors } from "../../colors";
 
 function TaskTabs() {
   const containerCss = css`

@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { H4, Paragraph } from "./Text";
-import type { Priority, Task } from "../types";
-import TaskIcon from "../assets/kIcon.svg";
-import Card from "./Card";
-import { colors } from "../colors";
-import Separator from "./Separator";
-import Btn from "./Button";
+import { H4, Paragraph } from "../Text";
+import type { Priority, Task } from "../../types";
+import TaskIcon from "../../assets/kIcon.svg";
+import Card from "../Card";
+import { colors } from "../../colors";
+import Separator from "../Separator";
+import Btn from "../Button";
 
 const cardCss = css`
   padding: 32px 32px;

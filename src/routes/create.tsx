@@ -1,17 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import Card from "../components/Card";
 import { useState } from "react";
 import Input from "../components/Input";
 import TextArea from "../components/TextArea";
 import Separator from "../components/Separator";
 import Select from "../components/Select";
+import type { Task } from "../types";
+import { useGlobal } from "../state/GlobalContext";
 
 export const Route = createFileRoute("/create")({
   component: RouteComponent,
 
-  // Typing with context is a nightmare
   beforeLoad: ({ context }: any) => {
     if (!context.global?.isAuthenticated) {
       throw redirect({ to: "/login" });
@@ -77,10 +78,12 @@ const formCss = css`
 `;
 
 function RouteComponent() {
+  const { setTasks } = useGlobal();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     taskName: "",
     taskDescription: "",
-    assignee: "person1",
+    assignee: "Simon",
     priority: "P1",
     dueDate: "",
   });
@@ -96,7 +99,48 @@ function RouteComponent() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Task Created:", formData);
+
+    // Priority Validation
+    const validPriorities: Array<Task["priority"]> = ["P1", "P2", "P3"];
+    if (!validPriorities.includes(formData.priority as Task["priority"])) {
+      alert("Priority is not valid!");
+      return;
+    }
+
+    // Local Date Parsing
+    const parseLocalDate = (dateStr: string): Date => {
+      const [year, month, day] = dateStr.split("-").map(Number);
+      return new Date(year, month - 1, day); // month is 0-indexed
+    };
+    const getTodayLocal = (): Date => {
+      const now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    };
+    const due = parseLocalDate(formData.dueDate);
+    const today = getTodayLocal();
+
+    // Date Validation
+    if (isNaN(due.getTime())) {
+      alert("Due Date is not valid!");
+      return;
+    }
+    if (due < today) {
+      alert("Due Date cannot be in the past!");
+      return;
+    }
+
+    // Create Task
+    const newTask: Task = {
+      id: formData.taskName + Date.now(),
+      name: formData.taskName,
+      description: formData.taskDescription,
+      assignedTo: formData.assignee,
+      priority: formData.priority as "P1" | "P2" | "P3",
+      assignedDate: new Date(), // now
+      dueDate: due, // local date
+    };
+    setTasks((prev) => [...prev, newTask]);
+    navigate({ to: "/" });
   };
 
   return (
@@ -136,44 +180,26 @@ function RouteComponent() {
               value={formData.assignee}
               onChange={handleChange}
             >
-              <option value="person1">Person 1</option>
-              <option value="person2">Person 2</option>
+              <option value="Simon">Simon</option>
+              <option value="Chaela">Chaela</option>
             </Select>
           </div>
 
           <div className="form-field">
             <label>Priority</label>
             <div className="priority-group">
-              <label>
-                <input
-                  type="radio"
-                  name="priority"
-                  value="P1"
-                  checked={formData.priority === "P1"}
-                  onChange={handleChange}
-                />
-                P1
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="priority"
-                  value="P2"
-                  checked={formData.priority === "P2"}
-                  onChange={handleChange}
-                />
-                P2
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="priority"
-                  value="P3"
-                  checked={formData.priority === "P3"}
-                  onChange={handleChange}
-                />
-                P3
-              </label>
+              {["P1", "P2", "P3"].map((p) => (
+                <label key={p}>
+                  <input
+                    type="radio"
+                    name="priority"
+                    value={p}
+                    checked={formData.priority === p}
+                    onChange={handleChange}
+                  />
+                  {p}
+                </label>
+              ))}
             </div>
           </div>
 
