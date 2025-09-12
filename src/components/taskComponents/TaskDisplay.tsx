@@ -12,8 +12,8 @@ import { useTaskContext } from "../../state/TaskContext";
 import { formatDate } from "../../utils/dateFormat";
 
 const cardCss = css`
-  padding: 32px 32px;
-  min-height: 160px;
+  padding: 24px 32px;
+  min-height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,6 +78,8 @@ const lowerContainerCss = css`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
 `;
 
 function TaskHeader({
