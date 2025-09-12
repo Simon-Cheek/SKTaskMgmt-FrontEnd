@@ -4,7 +4,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { colors } from "../colors";
-import { useGlobal } from "../state/GlobalContext";
+import { useAuth } from "../state/AuthContext";
 
 const navCss = css`
   display: flex;
@@ -110,7 +110,7 @@ const linkStyle = css`
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { logout, isAuthenticated } = useGlobal();
+  const { logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const menuRef = useRef<HTMLDivElement>(null);
 

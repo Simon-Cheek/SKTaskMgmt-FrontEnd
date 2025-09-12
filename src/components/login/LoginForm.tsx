@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Btn from "../Button";
 import Input from "../Input";
 import Separator from "../Separator";
-import { useGlobal } from "../../state/GlobalContext";
 import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "../../state/AuthContext";
 
 const formCss = css`
   display: flex;
@@ -22,7 +22,7 @@ const errorCss = css`
 `;
 
 export function LoginForm() {
-  const { login } = useGlobal();
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +32,9 @@ export function LoginForm() {
     e.preventDefault();
     try {
       await login(username, password);
+      console.log("Finished login");
       navigate({ to: "/" });
+      console.log("Should have navigated by now");
     } catch (err) {
       setError("Invalid username or password.");
       // Clear after 3 seconds

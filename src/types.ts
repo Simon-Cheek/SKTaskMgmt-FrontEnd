@@ -8,6 +8,13 @@ export interface Task {
   dueDate: Date;
 }
 
+export interface AuthContext {
+  user: User | null;
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => void;
+  isAuthenticated: boolean;
+}
+
 export type Priority = "P1" | "P2" | "P3";
 
 export type User = { id: string; username: string };

@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
 
   // Typing with context is a nightmare
   beforeLoad: ({ context }: any) => {
-    if (!context.global?.isAuthenticated) {
+    if (!context.auth?.isAuthenticated) {
       throw redirect({ to: "/login" });
     }
   },

@@ -8,13 +8,13 @@ import TextArea from "../components/TextArea";
 import Separator from "../components/Separator";
 import Select from "../components/Select";
 import type { Task } from "../types";
-import { useGlobal } from "../state/GlobalContext";
+import { useTasks } from "../hooks/useTasks";
 
 export const Route = createFileRoute("/create")({
   component: RouteComponent,
 
   beforeLoad: ({ context }: any) => {
-    if (!context.global?.isAuthenticated) {
+    if (!context.auth?.isAuthenticated) {
       throw redirect({ to: "/login" });
     }
   },
@@ -78,7 +78,7 @@ const formCss = css`
 `;
 
 function RouteComponent() {
-  const { setTasks } = useGlobal();
+  const { addTask } = useTasks();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     taskName: "",
@@ -139,7 +139,7 @@ function RouteComponent() {
       assignedDate: new Date(), // now
       dueDate: due, // local date
     };
-    setTasks((prev) => [...prev, newTask]);
+    addTask(newTask);
     navigate({ to: "/" });
   };
 

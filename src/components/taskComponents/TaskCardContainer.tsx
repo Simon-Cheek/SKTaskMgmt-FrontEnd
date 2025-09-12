@@ -5,7 +5,7 @@ import TaskTabs from "./TaskTabs";
 import Card from "../Card";
 import Separator from "../Separator";
 import { colors } from "../../colors";
-import { useGlobal } from "../../state/GlobalContext";
+import { useTasks } from "../../hooks/useTasks";
 
 function TaskCardContainer() {
   const overflowCss = css`
@@ -21,7 +21,7 @@ function TaskCardContainer() {
     border-top: 1px solid ${colors.gray03};
   `;
 
-  const { tasks } = useGlobal();
+  const { tasks } = useTasks();
 
   return (
     <Card>
