@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { H4, Paragraph } from "../Text";
 import type { Priority } from "../../types";
 import Card from "../Card";
@@ -12,7 +13,7 @@ import { formatDate } from "../../utils/dateFormat";
 
 const cardCss = css`
   padding: 32px 32px;
-  min-height: 160px; // ✅ ensures stable height
+  min-height: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,48 +106,65 @@ export default function TaskDisplay() {
 
   return (
     <Card customCSS={cardCss}>
-      {!task ? (
-        <Paragraph>Select a Task to View Details</Paragraph>
-      ) : (
-        <div css={{ width: "100%" }}>
-          <TaskHeader
-            title={task.name}
-            priority={task.priority}
-            assignedUsername={task.assignedTo}
-          />
-          <Separator />
-          <div css={contentCss}>
-            <div>
-              <Paragraph>
-                {task.description?.trim() || "No description provided."}
-              </Paragraph>
-            </div>
+      <AnimatePresence mode="wait">
+        {!task ? (
+          <motion.div
+            key="empty"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.09 }}
+          >
+            <Paragraph>Select a Task to View Details</Paragraph>
+          </motion.div>
+        ) : (
+          <motion.div
+            key={task.id} // ✅ important so animation runs on new task
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.09 }}
+            style={{ width: "100%" }}
+          >
+            <TaskHeader
+              title={task.name}
+              priority={task.priority}
+              assignedUsername={task.assignedTo}
+            />
             <Separator />
-            <div css={lowerContainerCss}>
-              <div css={dateContainerCss}>
-                <div>
-                  <Paragraph customCSS={labelCss}>Due Date</Paragraph>
-                  <Paragraph customCSS={valueCss}>
-                    {formatDate(task.dueDate)}
-                  </Paragraph>
-                </div>
-                <Separator direction="vertical" size="lg" />
-                <div>
-                  <Paragraph customCSS={labelCss}>Assigned Date</Paragraph>
-                  <Paragraph customCSS={valueCss}>
-                    {formatDate(task.assignedDate)}
-                  </Paragraph>
-                </div>
+            <div css={contentCss}>
+              <div>
+                <Paragraph>
+                  {task.description?.trim() || "No description provided."}
+                </Paragraph>
               </div>
-              <div css={btnContainerCss}>
-                <Btn color="blue">Edit</Btn>
-                <Separator direction="vertical" size="sm" />
-                <Btn color="red">Delete</Btn>
+              <Separator />
+              <div css={lowerContainerCss}>
+                <div css={dateContainerCss}>
+                  <div>
+                    <Paragraph customCSS={labelCss}>Due Date</Paragraph>
+                    <Paragraph customCSS={valueCss}>
+                      {formatDate(task.dueDate)}
+                    </Paragraph>
+                  </div>
+                  <Separator direction="vertical" size="lg" />
+                  <div>
+                    <Paragraph customCSS={labelCss}>Assigned Date</Paragraph>
+                    <Paragraph customCSS={valueCss}>
+                      {formatDate(task.assignedDate)}
+                    </Paragraph>
+                  </div>
+                </div>
+                <div css={btnContainerCss}>
+                  <Btn color="blue">Edit</Btn>
+                  <Separator direction="vertical" size="sm" />
+                  <Btn color="red">Delete</Btn>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Card>
   );
 }
