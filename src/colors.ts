@@ -11,6 +11,18 @@ export const colors: Record<string, string> = {
   blue08: "#041A44", // very dark navy
   blue09: "#010A26", // near-black blue
 
+  // ---- Reds (Highlight / parse accent) ----
+  red00: "#FDE8EA", // very light rose, subtle background
+  red01: "#F9C5C9", // pastel red/pink
+  red02: "#F28C94", // softer highlight
+  red03: "#E85863", // clear noticeable red
+  red04: "#D9303E", // strong parsing red
+  red05: "#B51E2B", // deeper red, good for emphasis
+  red06: "#8C1420", // dark accent red
+  red07: "#660D17", // rich deep red
+  red08: "#44090F", // very dark red
+  red09: "#260508", // almost black-red
+
   // ---- Browns (Earthy secondary) ----
   brown00: "#F8EEE7", // very light cream
   brown01: "#EBD2B8", // warm sand

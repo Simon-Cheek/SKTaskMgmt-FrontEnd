@@ -1,28 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { H4, Paragraph } from "../Text";
-import type { Priority, Task } from "../../types";
+import type { Priority } from "../../types";
 import Card from "../Card";
 import { colors } from "../../colors";
 import Separator from "../Separator";
 import Btn from "../Button";
 import { UserIcon } from "../UserIcon";
+import { useTaskContext } from "../../state/TaskContext";
+import { formatDate } from "../../utils/dateFormat";
 
 const cardCss = css`
   padding: 32px 32px;
-`;
-
-const emptyStateCss = css`
-  background-color: #fbfeff;
-  border-radius: 24px;
-  margin: 2em 0.5em;
+  min-height: 160px; // ✅ ensures stable height
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 200px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  margin: 1.5em 0;
 `;
 
 const iconCss = css`
@@ -85,25 +79,6 @@ const lowerContainerCss = css`
   align-items: flex-end;
 `;
 
-function formatDate(date: Date) {
-  try {
-    return date.toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "short",
-      day: "2-digit",
-    });
-  } catch {
-    const parsed = new Date(date as unknown as string);
-    return isNaN(parsed.getTime())
-      ? "—"
-      : parsed.toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "short",
-          day: "2-digit",
-        });
-  }
-}
-
 function TaskHeader({
   title,
   priority,
@@ -125,51 +100,53 @@ function TaskHeader({
   );
 }
 
-function TaskDisplay({ task }: { task?: Task | null }) {
-  return !task ? (
-    <div css={emptyStateCss}>
-      <Paragraph>Select a Task to View Details</Paragraph>
-    </div>
-  ) : (
+export default function TaskDisplay() {
+  const { selectedTask: task } = useTaskContext();
+
+  return (
     <Card customCSS={cardCss}>
-      <TaskHeader
-        title={task.name}
-        priority={task.priority}
-        assignedUsername={task.assignedTo}
-      />
-      <Separator />
-      <div css={contentCss}>
-        <div>
-          <Paragraph>
-            {task.description?.trim() || "No description provided."}
-          </Paragraph>
-        </div>
-        <Separator />
-        <div css={lowerContainerCss}>
-          <div css={dateContainerCss}>
+      {!task ? (
+        <Paragraph>Select a Task to View Details</Paragraph>
+      ) : (
+        <div css={{ width: "100%" }}>
+          <TaskHeader
+            title={task.name}
+            priority={task.priority}
+            assignedUsername={task.assignedTo}
+          />
+          <Separator />
+          <div css={contentCss}>
             <div>
-              <Paragraph customCSS={labelCss}>Due Date</Paragraph>
-              <Paragraph customCSS={valueCss}>
-                {formatDate(task.dueDate)}
+              <Paragraph>
+                {task.description?.trim() || "No description provided."}
               </Paragraph>
             </div>
-            <Separator direction="vertical" size="lg" />
-            <div>
-              <Paragraph customCSS={labelCss}>Assigned Date</Paragraph>
-              <Paragraph customCSS={valueCss}>
-                {formatDate(task.assignedDate)}
-              </Paragraph>
+            <Separator />
+            <div css={lowerContainerCss}>
+              <div css={dateContainerCss}>
+                <div>
+                  <Paragraph customCSS={labelCss}>Due Date</Paragraph>
+                  <Paragraph customCSS={valueCss}>
+                    {formatDate(task.dueDate)}
+                  </Paragraph>
+                </div>
+                <Separator direction="vertical" size="lg" />
+                <div>
+                  <Paragraph customCSS={labelCss}>Assigned Date</Paragraph>
+                  <Paragraph customCSS={valueCss}>
+                    {formatDate(task.assignedDate)}
+                  </Paragraph>
+                </div>
+              </div>
+              <div css={btnContainerCss}>
+                <Btn color="blue">Edit</Btn>
+                <Separator direction="vertical" size="sm" />
+                <Btn color="red">Delete</Btn>
+              </div>
             </div>
           </div>
-          <div css={btnContainerCss}>
-            <Btn color="blue">Edit</Btn>
-            <Separator direction="vertical" size="sm" />
-            <Btn color="blue">Delete</Btn>
-          </div>
         </div>
-      </div>
+      )}
     </Card>
   );
 }
-
-export default TaskDisplay;

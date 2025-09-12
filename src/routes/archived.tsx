@@ -6,6 +6,7 @@ import TaskCardContainer from "../components/taskComponents/TaskCardContainer";
 import Separator from "../components/Separator";
 import TaskDisplay from "../components/taskComponents/TaskDisplay";
 import { colors } from "../colors";
+import { TaskProvider } from "../state/TaskContext";
 
 export const Route = createFileRoute("/archived")({
   component: RouteComponent,
@@ -56,9 +57,11 @@ function RouteComponent() {
         <div css={displayContainerCss}>
           <H1 customCSS={titleDisplayCss}>Archived Tasks</H1>
         </div>
-        <TaskDisplay task={null} />
-        <Separator />
-        <TaskCardContainer />
+        <TaskProvider>
+          <TaskDisplay />
+          <Separator />
+          <TaskCardContainer />
+        </TaskProvider>
       </div>
     </div>
   );
