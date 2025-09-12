@@ -20,7 +20,7 @@ STATE MANAGEMENT CHECKLIST:
 
 - Main Task Page + Archived
   - Sort By Functionality
+  - Logic for completing tasks
   - Edit takes you to edit page
-  - Delete deletes the task
 - Edit
   - Edit actually edits a task

@@ -47,6 +47,18 @@ export const colors: Record<string, string> = {
   gray08: "#191C21", // very dark gray
   gray09: "#0B0C0E", // near-black neutral
 
+  // ---- Greens (Highlight / success accent) ----
+  green00: "#E6F7ED", // very light mint, subtle background
+  green01: "#C2EBD3", // soft pastel green
+  green02: "#8FD9AF", // calm but noticeable
+  green03: "#5AC88C", // fresh, balanced mid-tone
+  green04: "#2EB871", // strong highlight green
+  green05: "#189E5B", // deeper accent for contrast
+  green06: "#0F7744", // darker green, good for emphasis
+  green07: "#085331", // rich forest tone
+  green08: "#042E1B", // very dark green
+  green09: "#01170D", // near-black green
+
   // ---- Pure White ----
   white: "#FFFFFF",
 

@@ -138,6 +138,7 @@ function RouteComponent() {
       priority: formData.priority as "P1" | "P2" | "P3",
       assignedDate: new Date(), // now
       dueDate: due, // local date
+      status: "Active",
     };
     addTask(newTask);
     navigate({ to: "/" });

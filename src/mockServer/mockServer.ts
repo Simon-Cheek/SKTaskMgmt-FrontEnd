@@ -10,6 +10,7 @@ let tasks: Task[] = [
     priority: "P1",
     assignedDate: new Date("2025-09-10"),
     dueDate: new Date("2025-09-15"),
+    status: "Active",
   },
   {
     id: "2",
@@ -19,6 +20,7 @@ let tasks: Task[] = [
     priority: "P2",
     assignedDate: new Date("2025-09-11"),
     dueDate: new Date("2025-09-20"),
+    status: "Complete",
   },
 ];
 

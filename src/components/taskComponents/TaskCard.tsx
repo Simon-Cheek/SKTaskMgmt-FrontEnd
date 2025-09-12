@@ -6,7 +6,7 @@ import { colors } from "../../colors";
 import type { Task } from "../../types";
 import { formatDate } from "../../utils/dateFormat";
 import { UserIcon } from "../UserIcon";
-import { useTaskContext } from "../../state/TaskContext";
+import { useTaskDisplayContext } from "../../state/TaskDisplayContext";
 
 const cardCss = css`
   display: flex;
@@ -58,7 +58,7 @@ const dateCss = css`
 `;
 
 function TaskCard({ task }: { task: Task }) {
-  const { setSelectedTask } = useTaskContext();
+  const { setSelectedTask } = useTaskDisplayContext();
 
   return task == null ? (
     <div />

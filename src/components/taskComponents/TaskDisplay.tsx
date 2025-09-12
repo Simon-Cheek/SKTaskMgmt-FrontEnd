@@ -8,8 +8,9 @@ import { colors } from "../../colors";
 import Separator from "../Separator";
 import Btn from "../Button";
 import { UserIcon } from "../UserIcon";
-import { useTaskContext } from "../../state/TaskContext";
+import { useTaskDisplayContext } from "../../state/TaskDisplayContext";
 import { formatDate } from "../../utils/dateFormat";
+import { useTasks } from "../../hooks/useTasks";
 
 const cardCss = css`
   padding: 24px 32px;
@@ -82,6 +83,11 @@ const lowerContainerCss = css`
   gap: 1rem;
 `;
 
+const customDisplayButtonCss = css`
+  padding: 10px 12px;
+  font-size: 0.9em;
+`;
+
 function TaskHeader({
   title,
   priority,
@@ -104,7 +110,14 @@ function TaskHeader({
 }
 
 export default function TaskDisplay() {
-  const { selectedTask: task } = useTaskContext();
+  const { selectedTask: task, setSelectedTask } = useTaskDisplayContext();
+  const { deleteTask } = useTasks();
+  const handleDelete = () => {
+    if (task) {
+      setSelectedTask(null);
+      deleteTask(task);
+    }
+  };
 
   return (
     <Card customCSS={cardCss}>
@@ -158,9 +171,21 @@ export default function TaskDisplay() {
                   </div>
                 </div>
                 <div css={btnContainerCss}>
-                  <Btn color="blue">Edit</Btn>
+                  <Btn color="green" customCSS={customDisplayButtonCss}>
+                    Complete
+                  </Btn>
                   <Separator direction="vertical" size="sm" />
-                  <Btn color="red">Delete</Btn>
+                  <Btn color="blue" customCSS={customDisplayButtonCss}>
+                    Edit
+                  </Btn>
+                  <Separator direction="vertical" size="sm" />
+                  <Btn
+                    color="red"
+                    customCSS={customDisplayButtonCss}
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </Btn>
                 </div>
               </div>
             </div>

@@ -75,7 +75,7 @@ const Btn: React.FC<BtnProps> = ({
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition:
       background-color 0.2s ease,
-      transform 0.1s ease,
+      transform 0.25s ease,
       box-shadow 0.2s ease;
 
     &:hover {

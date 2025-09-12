@@ -6,6 +6,9 @@ import Card from "../Card";
 import Separator from "../Separator";
 import { colors } from "../../colors";
 import { useTasks } from "../../hooks/useTasks";
+import { useMemo } from "react";
+import { useTaskDisplayContext } from "../../state/TaskDisplayContext";
+import { useAuth } from "../../state/AuthContext";
 
 function TaskCardContainer() {
   const overflowCss = css`
@@ -22,12 +25,41 @@ function TaskCardContainer() {
   `;
 
   const { tasks } = useTasks();
+  const { sortBy } = useTaskDisplayContext();
+  const { user } = useAuth();
+
+  // derive sorted tasks without mutating the original
+  const sortedTasks = useMemo(() => {
+    if (!tasks) return [];
+
+    if (sortBy === "priority") {
+      const order = { P1: 1, P2: 2, P3: 3 };
+      return [...tasks].sort((a, b) => order[a.priority] - order[b.priority]);
+    }
+
+    if (sortBy === "dueDate") {
+      return [...tasks].sort(
+        (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+      );
+    }
+
+    if (sortBy === "assignedUser") {
+      if (user == null) {
+        return tasks;
+      }
+      const mine = tasks.filter((t) => t.assignedTo === user.username);
+      const others = tasks.filter((t) => t.assignedTo !== user.username);
+      return [...mine, ...others];
+    }
+
+    return tasks;
+  }, [tasks, sortBy, user?.username]);
 
   return (
     <Card>
       <TaskTabs />
       <div css={overflowCss}>
-        {tasks.map((task) => (
+        {sortedTasks.map((task) => (
           <TaskCard task={task} />
         ))}
       </div>

@@ -24,7 +24,7 @@ const menuButtonCss = css`
   display: none;
   cursor: pointer;
 
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
     display: block;
   }
 `;
@@ -34,7 +34,7 @@ const linkContainerCss = css`
   gap: 20px;
   align-items: center; /* ensures vertical centering */
 
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
     display: none;
   }
 
