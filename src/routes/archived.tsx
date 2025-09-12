@@ -49,17 +49,6 @@ const titleDisplayCss = css`
   font-size: 1.7em;
 `;
 
-// const fakeTask: Task = {
-//   id: "task-001",
-//   name: "Finalize Q3 Marketing Plan",
-//   description:
-//     "Review all campaign proposals, finalize the ad schedule, and coordinate with the creative team for asset delivery.",
-//   assignedTo: "Alex Johnson",
-//   priority: "P1",
-//   assignedDate: new Date("2025-08-15T09:00:00Z"),
-//   dueDate: new Date("2025-08-30T17:00:00Z"),
-// };
-
 function RouteComponent() {
   return (
     <div css={pageWrapperCss}>

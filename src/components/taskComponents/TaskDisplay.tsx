@@ -2,11 +2,11 @@
 import { css } from "@emotion/react";
 import { H4, Paragraph } from "../Text";
 import type { Priority, Task } from "../../types";
-import TaskIcon from "../../assets/kIcon.svg";
 import Card from "../Card";
 import { colors } from "../../colors";
 import Separator from "../Separator";
 import Btn from "../Button";
+import { UserIcon } from "../UserIcon";
 
 const cardCss = css`
   padding: 32px 32px;
@@ -107,14 +107,16 @@ function formatDate(date: Date) {
 function TaskHeader({
   title,
   priority,
+  assignedUsername,
 }: {
   title: string;
   priority: Priority;
+  assignedUsername: string;
 }) {
   return (
     <div css={taskHeaderCss}>
       <div css={leftSectionCss}>
-        <img src={TaskIcon} alt="Task Icon" css={iconCss} />
+        <img src={UserIcon(assignedUsername)} alt="Task Icon" css={iconCss} />
         <Separator direction="vertical" />
         <H4>{title}</H4>
       </div>
@@ -130,7 +132,11 @@ function TaskDisplay({ task }: { task?: Task | null }) {
     </div>
   ) : (
     <Card customCSS={cardCss}>
-      <TaskHeader title={task.name} priority={task.priority} />
+      <TaskHeader
+        title={task.name}
+        priority={task.priority}
+        assignedUsername={task.assignedTo}
+      />
       <Separator />
       <div css={contentCss}>
         <div>

@@ -62,7 +62,7 @@ const fakeTask: Task = {
   name: "Finalize Q3 Marketing Plan",
   description:
     "Review all campaign proposals, finalize the ad schedule, and coordinate with the creative team for asset delivery.",
-  assignedTo: "Alex Johnson",
+  assignedTo: "Chaela",
   priority: "P1",
   assignedDate: new Date("2025-08-15T09:00:00Z"),
   dueDate: new Date("2025-08-30T17:00:00Z"),
