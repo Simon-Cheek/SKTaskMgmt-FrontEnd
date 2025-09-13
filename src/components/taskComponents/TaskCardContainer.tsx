@@ -5,12 +5,16 @@ import TaskTabs from "./TaskTabs";
 import Card from "../Card";
 import Separator from "../Separator";
 import { colors } from "../../colors";
-import { useTasks } from "../../hooks/useTasks";
 import { useMemo } from "react";
 import { useTaskDisplayContext } from "../../state/TaskDisplayContext";
 import { useAuth } from "../../state/AuthContext";
+import type { Task } from "../../types";
 
-function TaskCardContainer() {
+type TaskCardContainerProps = {
+  tasks: Task[];
+};
+
+function TaskCardContainer({ tasks }: TaskCardContainerProps) {
   const overflowCss = css`
     max-height: 300px;
     overflow-y: auto;
@@ -24,7 +28,7 @@ function TaskCardContainer() {
     border-top: 1px solid ${colors.gray03};
   `;
 
-  const { tasks } = useTasks();
+  // const { tasks } = useTasks();
   const { sortBy } = useTaskDisplayContext();
   const { user } = useAuth();
 

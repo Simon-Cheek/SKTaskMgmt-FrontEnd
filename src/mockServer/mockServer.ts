@@ -27,11 +27,23 @@ let tasks: Task[] = [
 // Simulate network latency
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// ---- Core fetchers ----
 export async function fetchTasks(): Promise<Task[]> {
-  await delay(200); // simulate network delay
-  return [...tasks]; // return a copy
+  await delay(200);
+  return [...tasks];
 }
 
+export async function fetchActiveTasks(): Promise<Task[]> {
+  await delay(200);
+  return tasks.filter((t) => t.status === "Active");
+}
+
+export async function fetchArchivedTasks(): Promise<Task[]> {
+  await delay(200);
+  return tasks.filter((t) => t.status === "Complete" || t.status === "Expired");
+}
+
+// ---- Mutations ----
 export async function addTask(task: Task): Promise<Task> {
   await delay(200);
   tasks.push(task);
@@ -47,4 +59,9 @@ export async function updateTask(updated: Task): Promise<Task> {
 export async function deleteTask(id: string): Promise<void> {
   await delay(200);
   tasks = tasks.filter((t) => t.id !== id);
+}
+
+export async function markAsComplete(id: string): Promise<void> {
+  await delay(200);
+  tasks = tasks.map((t) => (t.id === id ? { ...t, status: "Complete" } : t));
 }

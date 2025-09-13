@@ -1,18 +1,35 @@
 // src/hooks/useTasks.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Task } from "../types";
-import { addTask, deleteTask, fetchTasks } from "../mockServer/mockServer";
+import {
+  addTask,
+  deleteTask,
+  fetchTasks,
+  fetchActiveTasks,
+  fetchArchivedTasks,
+  markAsComplete,
+} from "../mockServer/mockServer";
 
 export function useTasks() {
   const queryClient = useQueryClient();
 
-  // Fetch tasks
-  const tasksQuery = useQuery<Task[]>({
-    queryKey: ["tasks"],
+  // --- Queries ---
+  const allTasksQuery = useQuery<Task[]>({
+    queryKey: ["tasks", "all"],
     queryFn: fetchTasks,
   });
 
-  // Add task
+  const activeTasksQuery = useQuery<Task[]>({
+    queryKey: ["tasks", "active"],
+    queryFn: fetchActiveTasks,
+  });
+
+  const archivedTasksQuery = useQuery<Task[]>({
+    queryKey: ["tasks", "archived"],
+    queryFn: fetchArchivedTasks,
+  });
+
+  // --- Mutations ---
   const addTaskMutation = useMutation({
     mutationFn: (task: Task) => addTask(task),
     onSuccess: () => {
@@ -20,7 +37,6 @@ export function useTasks() {
     },
   });
 
-  // Delete task
   const deleteTaskMutation = useMutation({
     mutationFn: (task: Task) => deleteTask(task.id),
     onSuccess: () => {
@@ -28,10 +44,27 @@ export function useTasks() {
     },
   });
 
+  const markAsCompleteMutation = useMutation({
+    mutationFn: (id: string) => markAsComplete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+
   return {
-    tasks: tasksQuery.data ?? [],
-    isLoading: tasksQuery.isLoading,
+    // Data
+    allTasks: allTasksQuery.data ?? [],
+    activeTasks: activeTasksQuery.data ?? [],
+    archivedTasks: archivedTasksQuery.data ?? [],
+
+    // Loading states
+    isLoadingAll: allTasksQuery.isLoading,
+    isLoadingActive: activeTasksQuery.isLoading,
+    isLoadingArchived: archivedTasksQuery.isLoading,
+
+    // Mutations
     addTask: addTaskMutation.mutate,
     deleteTask: deleteTaskMutation.mutate,
+    markAsComplete: markAsCompleteMutation.mutate,
   };
 }
