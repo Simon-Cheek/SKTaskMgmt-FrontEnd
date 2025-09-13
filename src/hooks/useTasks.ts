@@ -8,6 +8,7 @@ import {
   fetchActiveTasks,
   fetchArchivedTasks,
   markAsComplete,
+  updateTask, // ✅ import your mock server function
 } from "../mockServer/mockServer";
 
 export function useTasks() {
@@ -51,6 +52,13 @@ export function useTasks() {
     },
   });
 
+  const updateTaskMutation = useMutation({
+    mutationFn: (task: Task) => updateTask(task),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+
   return {
     // Data
     allTasks: allTasksQuery.data ?? [],
@@ -66,5 +74,6 @@ export function useTasks() {
     addTask: addTaskMutation.mutate,
     deleteTask: deleteTaskMutation.mutate,
     markAsComplete: markAsCompleteMutation.mutate,
+    updateTask: updateTaskMutation.mutate, // ✅ new hook
   };
 }

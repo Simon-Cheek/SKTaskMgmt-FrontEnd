@@ -109,19 +109,33 @@ function TaskHeader({
   );
 }
 
+import { useNavigate } from "@tanstack/react-router";
+
 export default function TaskDisplay() {
   const { selectedTask: task, setSelectedTask } = useTaskDisplayContext();
   const { deleteTask, markAsComplete } = useTasks();
+  const navigate = useNavigate();
+
   const handleComplete = () => {
     if (task) {
       setSelectedTask(null);
       markAsComplete(task.id);
     }
   };
+
   const handleDelete = () => {
     if (task) {
       setSelectedTask(null);
       deleteTask(task.id);
+    }
+  };
+
+  const handleEdit = () => {
+    if (task) {
+      navigate({
+        to: "/edit",
+        search: { task: task.id }, // becomes ?task=<id>
+      });
     }
   };
 
@@ -187,7 +201,11 @@ export default function TaskDisplay() {
                         Complete
                       </Btn>
                       <Separator direction="vertical" size="sm" />
-                      <Btn color="blue" customCSS={customDisplayButtonCss}>
+                      <Btn
+                        color="blue"
+                        customCSS={customDisplayButtonCss}
+                        onClick={handleEdit}
+                      >
                         Edit
                       </Btn>
                       <Separator direction="vertical" size="sm" />

@@ -1,17 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  redirect,
+  useNavigate,
+  useSearch,
+} from "@tanstack/react-router";
 import Card from "../components/Card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../components/Input";
 import TextArea from "../components/TextArea";
 import Separator from "../components/Separator";
 import Select from "../components/Select";
+import type { Task } from "../types"; // adjust import path
+import { useTasks } from "../hooks/useTasks"; // placeholder – you’ll handle this
 
 export const Route = createFileRoute("/edit")({
   component: RouteComponent,
 
-  // Typing with context is a nightmare
   beforeLoad: ({ context }: any) => {
     if (!context.auth?.isAuthenticated) {
       throw redirect({ to: "/login" });
@@ -77,13 +83,36 @@ const formCss = css`
 `;
 
 function RouteComponent() {
+  const search = useSearch({ from: "/edit" });
+  const taskId = search.task as string;
+  const navigate = useNavigate();
+  const { updateTask } = useTasks();
+
+  const { allTasks: tasks } = useTasks();
+  const task = tasks?.find((t: Task) => t.id === taskId);
+
   const [formData, setFormData] = useState({
     taskName: "",
     taskDescription: "",
-    assignee: "person1",
+    assignee: "Simon",
     priority: "P1",
     dueDate: "",
   });
+
+  // Populate form with task data
+  useEffect(() => {
+    if (task) {
+      setFormData({
+        taskName: task.name,
+        taskDescription: task.description ?? "",
+        assignee: task.assignedTo,
+        priority: task.priority,
+        dueDate: task.dueDate
+          ? new Date(task.dueDate).toISOString().split("T")[0]
+          : "",
+      });
+    }
+  }, [task]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -96,8 +125,58 @@ function RouteComponent() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Task Altered:", formData);
+
+    // Priority Validation
+    const validPriorities: Array<Task["priority"]> = ["P1", "P2", "P3"];
+    if (!validPriorities.includes(formData.priority as Task["priority"])) {
+      alert("Priority is not valid!");
+      return;
+    }
+
+    // Local Date Helpers
+    const parseLocalDate = (dateStr: string): Date => {
+      const [year, month, day] = dateStr.split("-").map(Number);
+      return new Date(year, month - 1, day); // local midnight
+    };
+    const getTodayLocal = (): Date => {
+      const now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    };
+    const due = parseLocalDate(formData.dueDate);
+    const today = getTodayLocal();
+
+    // ---- Date Validation ----
+    if (isNaN(due.getTime())) {
+      alert("Due Date is not valid!");
+      return;
+    }
+    if (due < today) {
+      alert("Due Date cannot be in the past!");
+      return;
+    }
+    if (!task) return;
+    const updatedTask: Task = {
+      ...task,
+      name: formData.taskName,
+      description: formData.taskDescription,
+      assignedTo: formData.assignee,
+      priority: formData.priority as "P1" | "P2" | "P3",
+      dueDate: due,
+    };
+
+    updateTask(updatedTask);
+    navigate({ to: "/" });
   };
+
+  if (!task) {
+    return (
+      <div css={creationContainerCss}>
+        <Card customCSS={creationCardCss}>
+          <h2>No Task Found</h2>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div css={creationContainerCss}>
@@ -136,8 +215,8 @@ function RouteComponent() {
               value={formData.assignee}
               onChange={handleChange}
             >
-              <option value="person1">Person 1</option>
-              <option value="person2">Person 2</option>
+              <option value="Simon">Simon</option>
+              <option value="Chaela">Chaela</option>
             </Select>
           </div>
 
@@ -188,7 +267,7 @@ function RouteComponent() {
             />
           </div>
 
-          <button type="submit">Create Task</button>
+          <button type="submit">Save Task</button>
         </form>
       </Card>
     </div>
