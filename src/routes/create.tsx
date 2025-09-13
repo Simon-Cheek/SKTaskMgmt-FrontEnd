@@ -9,6 +9,8 @@ import Separator from "../components/Separator";
 import Select from "../components/Select";
 import type { Task } from "../types";
 import { useTasks } from "../hooks/useTasks";
+import { validatePriority } from "../utils/taskUtils";
+import { parseLocalDate, validateDueDate } from "../utils/dateFormat";
 
 export const Route = createFileRoute("/create")({
   component: RouteComponent,
@@ -100,46 +102,28 @@ function RouteComponent() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Priority Validation
-    const validPriorities: Array<Task["priority"]> = ["P1", "P2", "P3"];
-    if (!validPriorities.includes(formData.priority as Task["priority"])) {
+    if (!validatePriority(formData.priority)) {
       alert("Priority is not valid!");
       return;
     }
-
-    // Local Date Parsing
-    const parseLocalDate = (dateStr: string): Date => {
-      const [year, month, day] = dateStr.split("-").map(Number);
-      return new Date(year, month - 1, day); // month is 0-indexed
-    };
-    const getTodayLocal = (): Date => {
-      const now = new Date();
-      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    };
     const due = parseLocalDate(formData.dueDate);
-    const today = getTodayLocal();
-
-    // Date Validation
-    if (isNaN(due.getTime())) {
-      alert("Due Date is not valid!");
-      return;
-    }
-    if (due < today) {
-      alert("Due Date cannot be in the past!");
+    const error = validateDueDate(due);
+    if (error) {
+      alert(error);
       return;
     }
 
-    // Create Task
     const newTask: Task = {
       id: formData.taskName + Date.now(),
       name: formData.taskName,
       description: formData.taskDescription,
       assignedTo: formData.assignee,
       priority: formData.priority as "P1" | "P2" | "P3",
-      assignedDate: new Date(), // now
-      dueDate: due, // local date
+      assignedDate: new Date(),
+      dueDate: due,
       status: "Active",
     };
+
     addTask(newTask);
     navigate({ to: "/" });
   };

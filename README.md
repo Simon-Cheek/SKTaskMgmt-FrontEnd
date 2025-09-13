@@ -16,10 +16,11 @@ More Advanced Pages (V2)
 - Create Campaigns and group tasks into them (Viewing Page per Campaingn w/ Progress Stats)
 - Calendar Integration ?
 
-STATE MANAGEMENT CHECKLIST:
+---
 
-- Main Task Page + Archived
-  - Logic for completing tasks
-  - Edit takes you to edit page
-- Edit
-  - Edit actually edits a task
+TODO:
+
+- Wire in Backend
+- Persist authenticated sessions using endpoint
+- Configure cookies to be sent to backend domain
+- Make sure ID generation is backend

@@ -14,6 +14,8 @@ import Separator from "../components/Separator";
 import Select from "../components/Select";
 import type { Task } from "../types"; // adjust import path
 import { useTasks } from "../hooks/useTasks"; // placeholder – you’ll handle this
+import { validatePriority } from "../utils/taskUtils";
+import { parseLocalDate, validateDueDate } from "../utils/dateFormat";
 
 export const Route = createFileRoute("/edit")({
   component: RouteComponent,
@@ -126,34 +128,17 @@ function RouteComponent() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Priority Validation
-    const validPriorities: Array<Task["priority"]> = ["P1", "P2", "P3"];
-    if (!validPriorities.includes(formData.priority as Task["priority"])) {
+    if (!validatePriority(formData.priority)) {
       alert("Priority is not valid!");
       return;
     }
-
-    // Local Date Helpers
-    const parseLocalDate = (dateStr: string): Date => {
-      const [year, month, day] = dateStr.split("-").map(Number);
-      return new Date(year, month - 1, day); // local midnight
-    };
-    const getTodayLocal = (): Date => {
-      const now = new Date();
-      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    };
     const due = parseLocalDate(formData.dueDate);
-    const today = getTodayLocal();
+    const error = validateDueDate(due);
+    if (error) {
+      alert(error);
+      return;
+    }
 
-    // ---- Date Validation ----
-    if (isNaN(due.getTime())) {
-      alert("Due Date is not valid!");
-      return;
-    }
-    if (due < today) {
-      alert("Due Date cannot be in the past!");
-      return;
-    }
     if (!task) return;
     const updatedTask: Task = {
       ...task,
