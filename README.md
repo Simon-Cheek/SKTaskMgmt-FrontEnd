@@ -24,3 +24,4 @@ TODO:
 - Persist authenticated sessions using endpoint
 - Configure cookies to be sent to backend domain
 - Make sure ID generation is backend
+- Fix AuthContext
