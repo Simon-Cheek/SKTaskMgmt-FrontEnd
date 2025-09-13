@@ -111,11 +111,17 @@ function TaskHeader({
 
 export default function TaskDisplay() {
   const { selectedTask: task, setSelectedTask } = useTaskDisplayContext();
-  const { deleteTask } = useTasks();
+  const { deleteTask, markAsComplete } = useTasks();
+  const handleComplete = () => {
+    if (task) {
+      setSelectedTask(null);
+      markAsComplete(task.id);
+    }
+  };
   const handleDelete = () => {
     if (task) {
       setSelectedTask(null);
-      deleteTask(task);
+      deleteTask(task.id);
     }
   };
 
@@ -134,7 +140,7 @@ export default function TaskDisplay() {
           </motion.div>
         ) : (
           <motion.div
-            key={task.id} // ✅ important so animation runs on new task
+            key={task.id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -171,14 +177,22 @@ export default function TaskDisplay() {
                   </div>
                 </div>
                 <div css={btnContainerCss}>
-                  <Btn color="green" customCSS={customDisplayButtonCss}>
-                    Complete
-                  </Btn>
-                  <Separator direction="vertical" size="sm" />
-                  <Btn color="blue" customCSS={customDisplayButtonCss}>
-                    Edit
-                  </Btn>
-                  <Separator direction="vertical" size="sm" />
+                  {task.status !== "Complete" && (
+                    <>
+                      <Btn
+                        color="green"
+                        customCSS={customDisplayButtonCss}
+                        onClick={handleComplete}
+                      >
+                        Complete
+                      </Btn>
+                      <Separator direction="vertical" size="sm" />
+                      <Btn color="blue" customCSS={customDisplayButtonCss}>
+                        Edit
+                      </Btn>
+                      <Separator direction="vertical" size="sm" />
+                    </>
+                  )}
                   <Btn
                     color="red"
                     customCSS={customDisplayButtonCss}
