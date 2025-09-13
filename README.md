@@ -20,7 +20,6 @@ STATE MANAGEMENT CHECKLIST:
 
 - Main Task Page + Archived
   - Logic for completing tasks
-  - Separate out API calls for Archived and regular tasks (Archived = past due due OR marked as complete)
   - Edit takes you to edit page
 - Edit
   - Edit actually edits a task
