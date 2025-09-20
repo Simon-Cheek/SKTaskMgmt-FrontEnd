@@ -9,6 +9,21 @@
 
 // Refresh Access Token - uses refresh token to get new access token
 // just hits refresh endpoint, NO token needed or other input
+// Returns new access token
 
 // Get Logged in User - uses access token to get user info
 // takes access token, returns User object or null
+
+
+
+// WORKFLOWS
+
+// User is new to device / session
+// User logs in, gets credentials, is all set
+
+// User navigates to new page, session still fresh
+// No need for endpoint validation
+
+// User hits the refresh button
+// Fetch access token
+// Use access token to fetch user info
