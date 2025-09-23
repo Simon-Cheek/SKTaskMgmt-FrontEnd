@@ -16,15 +16,15 @@ export const Route = createFileRoute("/create")({
   component: RouteComponent,
 
   // Typing with context is a nightmare
-  beforeLoad: ({ context }: any) => {
+  beforeLoad: async ({ context }: any) => {
     const auth = context.auth;
 
-    // If auth state is still loading, don't redirect yet
+    // Wait until auth finishes loading / refreshes
     if (auth?.isLoading) {
-      return; // allow TanStack Router to wait until next render
+      await auth.refresh();
     }
 
-    // Once loading is done, check authentication
+    // Now check authentication
     if (!auth?.isAuthenticated) {
       throw redirect({ to: "/login" });
     }
