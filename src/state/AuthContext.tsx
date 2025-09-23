@@ -1,36 +1,73 @@
-// src/context/AuthContext.tsx
-import { createContext, useContext, useState } from "react";
-import type { ReactNode } from "react";
-import type { AuthContext, User } from "../types";
-import { authenticate, deauthenticate } from "./auth";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import type { User, AuthContext as AuthContextType } from "../types";
+import { authApi } from "../server/authApi";
 
-const AuthContext = createContext<AuthContext | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Login user and set tokens/user
   async function login(username: string, password: string) {
-    const u: User | null = await authenticate(username, password);
-    if (!u) throw new Error("Login Failed");
-    setUser(u);
+    const data = await authApi.login(username, password);
+    setAccessToken(data.access);
+    setUser(data.user);
   }
 
-  function logout() {
-    deauthenticate();
+  // Logout user and clear tokens/user
+  async function logout() {
+    await authApi.logout();
+    setAccessToken(null);
     setUser(null);
   }
 
+  // Refresh access token from HttpOnly cookie
+  async function refresh() {
+    try {
+      const data = await authApi.refreshAccessToken();
+      setAccessToken(data.access);
+      setUser(data.user);
+    } catch {
+      setAccessToken(null);
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  // Run refresh on mount
+  useEffect(() => {
+    refresh();
+  }, []);
+
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated: !!user }}
+      value={{
+        user,
+        login,
+        logout,
+        accessToken,
+        isAuthenticated: !!user,
+        isLoading,
+        refresh, // optional, can expose to manually refresh if needed
+      }}
     >
       {children}
     </AuthContext.Provider>
   );
 }
 
+// Hook for consuming auth context
 export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
-  return ctx;
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
 }

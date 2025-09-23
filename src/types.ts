@@ -9,12 +9,15 @@ export interface Task {
   status: "Active" | "Complete" | "Expired";
 }
 
-export interface AuthContext {
+export type AuthContext = {
   user: User | null;
-  login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
+  accessToken: string | null;
   isAuthenticated: boolean;
-}
+  isLoading: boolean;
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  refresh: () => Promise<void>; // optional, for manually refreshing tokens
+};
 
 export type Priority = "P1" | "P2" | "P3";
 

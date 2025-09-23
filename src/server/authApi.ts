@@ -1,29 +1,53 @@
-// Register - create user, nothing else
-// takes username, password, and any other relevant info, returns void
+// api.ts
+import type { User } from "../types";
+import type { LoginResponse } from "./apiTypes";
 
-// Login - return access token + refresh token
-// takes username, password, and returns access token
+const backendUrl = "http://localhost:8000";
 
-// Logout - wipes refresh token
-// removes refresh token from DB, does nothing to access token, no args required
+export const authApi = {
+  register: async (username: string, password: string) => {
+    const response = await fetch(`${backendUrl}/users/register/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    if (!response.ok) throw new Error("Registration failed");
+  },
 
-// Refresh Access Token - uses refresh token to get new access token
-// just hits refresh endpoint, NO token needed or other input
-// Returns new access token
+  login: async (username: string, password: string): Promise<LoginResponse> => {
+    const response = await fetch(`${backendUrl}/auth/login/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ username, password }),
+    });
+    if (!response.ok) throw new Error("Login failed");
+    return response.json();
+  },
 
-// Get Logged in User - uses access token to get user info
-// takes access token, returns User object or null
+  logout: async () => {
+    const response = await fetch(`${backendUrl}/auth/logout/`, {
+      method: "POST",
+      credentials: "include",
+    });
+    if (!response.ok) throw new Error("Logout failed");
+  },
 
+  refreshAccessToken: async (): Promise<LoginResponse> => {
+    const response = await fetch(`${backendUrl}/auth/refresh/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+    if (!response.ok) throw new Error("Token refresh failed");
+    return response.json();
+  },
 
-
-// WORKFLOWS
-
-// User is new to device / session
-// User logs in, gets credentials, is all set
-
-// User navigates to new page, session still fresh
-// No need for endpoint validation
-
-// User hits the refresh button
-// Fetch access token
-// Use access token to fetch user info
+  getLoggedInUser: async (accessToken: string): Promise<User> => {
+    const response = await fetch(`${backendUrl}/users/me/`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.ok) throw new Error("Failed to fetch user");
+    return response.json();
+  },
+};

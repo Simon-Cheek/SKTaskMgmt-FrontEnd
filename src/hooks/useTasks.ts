@@ -8,7 +8,7 @@ import {
   fetchActiveTasks,
   fetchArchivedTasks,
   markAsComplete,
-  updateTask, // ✅ import your mock server function
+  updateTask,
 } from "../mockServer/mockServer";
 
 export function useTasks() {

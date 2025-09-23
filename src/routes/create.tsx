@@ -15,8 +15,17 @@ import { parseLocalDate, validateDueDate } from "../utils/dateFormat";
 export const Route = createFileRoute("/create")({
   component: RouteComponent,
 
+  // Typing with context is a nightmare
   beforeLoad: ({ context }: any) => {
-    if (!context.auth?.isAuthenticated) {
+    const auth = context.auth;
+
+    // If auth state is still loading, don't redirect yet
+    if (auth?.isLoading) {
+      return; // allow TanStack Router to wait until next render
+    }
+
+    // Once loading is done, check authentication
+    if (!auth?.isAuthenticated) {
       throw redirect({ to: "/login" });
     }
   },
