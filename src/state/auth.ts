@@ -1,21 +1,15 @@
-import type { User } from "../types";
-import { mockRegisteredUsers as users } from "./users";
+// src/lib/routeGuards.ts
+import { useAuth } from "./AuthContext";
+import { redirect } from "@tanstack/react-router";
 
-export const authenticate = (
-  username: String,
-  password: String
-): User | null => {
-  if (password != "password") {
-    return null;
-  }
-  for (const user of users) {
-    if (username == user.username) {
-      return user;
-    }
+export async function requireAuthBeforeLoad() {
+  const { isAuthenticated, refresh } = useAuth();
+
+  // Refresh user data if necessary
+  await refresh();
+
+  if (!isAuthenticated) {
+    throw redirect({ to: "/login" });
   }
   return null;
-};
-
-export const deauthenticate = () => {
-  localStorage.removeItem("SK-user");
-};
+}
