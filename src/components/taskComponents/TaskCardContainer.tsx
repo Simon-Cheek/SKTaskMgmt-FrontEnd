@@ -64,7 +64,7 @@ function TaskCardContainer({ tasks }: TaskCardContainerProps) {
       <TaskTabs />
       <div css={overflowCss}>
         {sortedTasks.map((task) => (
-          <TaskCard task={task} />
+          <TaskCard task={task} key={task.id} />
         ))}
       </div>
       <Separator customCSS={sepCss} />

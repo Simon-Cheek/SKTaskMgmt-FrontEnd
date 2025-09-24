@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { H1 } from "../components/Text";
 import TaskCardContainer from "../components/taskComponents/TaskCardContainer";
 import Separator from "../components/Separator";
@@ -13,7 +13,6 @@ import { authRouteBeforeLoad } from "../state/auth";
 export const Route = createFileRoute("/archived")({
   component: RouteComponent,
 
-  // Typing with context is a nightmare
   // Typing with context is a nightmare
   beforeLoad: async ({ context }: any) => {
     await authRouteBeforeLoad(context);

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { H1, Paragraph } from "../components/Text";
 import TaskCardContainer from "../components/taskComponents/TaskCardContainer";
 import Separator from "../components/Separator";

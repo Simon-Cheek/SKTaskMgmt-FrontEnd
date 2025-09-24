@@ -2,7 +2,6 @@
 import { css } from "@emotion/react";
 import {
   createFileRoute,
-  redirect,
   useNavigate,
   useSearch,
 } from "@tanstack/react-router";
@@ -12,8 +11,8 @@ import Input from "../components/Input";
 import TextArea from "../components/TextArea";
 import Separator from "../components/Separator";
 import Select from "../components/Select";
-import type { Task } from "../types"; // adjust import path
-import { useTasks } from "../hooks/useTasks"; // placeholder – you’ll handle this
+import type { Task } from "../types";
+import { useTasks } from "../hooks/useTasks";
 import { validatePriority } from "../utils/taskUtils";
 import { parseLocalDate, validateDueDate } from "../utils/dateFormat";
 import { authRouteBeforeLoad } from "../state/auth";
@@ -21,7 +20,6 @@ import { authRouteBeforeLoad } from "../state/auth";
 export const Route = createFileRoute("/edit")({
   component: RouteComponent,
 
-  // Typing with context is a nightmare
   // Typing with context is a nightmare
   beforeLoad: async ({ context }: any) => {
     await authRouteBeforeLoad(context);

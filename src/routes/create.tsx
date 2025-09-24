@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import Card from "../components/Card";
 import { useState } from "react";
 import Input from "../components/Input";
@@ -16,7 +16,6 @@ import { authRouteBeforeLoad } from "../state/auth";
 export const Route = createFileRoute("/create")({
   component: RouteComponent,
 
-  // Typing with context is a nightmare
   // Typing with context is a nightmare
   beforeLoad: async ({ context }: any) => {
     await authRouteBeforeLoad(context);

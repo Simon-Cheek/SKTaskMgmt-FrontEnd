@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import type { User, AuthContext as AuthContextType } from "../types";
 import { authApi } from "../server/authApi";
 import type { LoginResponse } from "../server/apiTypes";
@@ -16,19 +10,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
-
-  // Refresh credentials on load
-  // useEffect(() => {
-  //   const initializeAuth = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       await refresh();
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   initializeAuth();
-  // }, []);
 
   // Login user and set tokens/user
   async function login(username: string, password: string) {
