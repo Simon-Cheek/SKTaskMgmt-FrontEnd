@@ -1,4 +1,4 @@
-// src/lib/routeGuards.ts
+// Shared Auth Route logic
 import { useAuth } from "./AuthContext";
 import { redirect } from "@tanstack/react-router";
 

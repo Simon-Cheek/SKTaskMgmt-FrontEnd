@@ -32,12 +32,9 @@ export function LoginForm() {
     e.preventDefault();
     try {
       await login(username, password);
-      console.log("Finished login");
-      navigate({ to: "/" });
-      console.log("Should have navigated by now");
+      await navigate({ to: "/" });
     } catch (err) {
       setError("Invalid username or password.");
-      // Clear after 3 seconds
       setTimeout(() => setError(null), 3000);
     }
   };

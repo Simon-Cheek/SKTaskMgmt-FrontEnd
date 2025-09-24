@@ -1,52 +1,71 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import type { User, AuthContext as AuthContextType } from "../types";
 import { authApi } from "../server/authApi";
+import type { LoginResponse } from "../server/apiTypes";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
   // Login user and set tokens/user
   async function login(username: string, password: string) {
-    const data = await authApi.login(username, password);
-    setAccessToken(data.access);
-    setUser(data.user);
-  }
-
-  // Logout user and clear tokens/user
-  async function logout() {
-    await authApi.logout();
-    setAccessToken(null);
-    setUser(null);
-  }
-
-  // Refresh access token from HttpOnly cookie
-  async function refresh() {
+    setIsLoading(true);
     try {
-      const data = await authApi.refreshAccessToken();
+      const data: LoginResponse = await authApi.login(username, password);
       setAccessToken(data.access);
       setUser(data.user);
-    } catch {
-      setAccessToken(null);
-      setUser(null);
     } finally {
       setIsLoading(false);
     }
   }
 
-  // Run refresh on mount
-  useEffect(() => {
-    refresh();
-  }, []);
+  // Logout user and clear tokens/user
+  async function logout() {
+    await authApi.logout();
+    setAccessToken("");
+    setUser(null);
+  }
+
+  // Refresh access token from HttpOnly cookie
+  async function refresh(): Promise<string> {
+    try {
+      const data: LoginResponse = await authApi.refreshAccessToken();
+      setAccessToken(data.access);
+      setUser(data.user);
+      return data.access || ""; // We need to return token synchronously so it can be used for retries
+    } catch {
+      setAccessToken("");
+      setUser(null);
+      return "";
+    }
+  }
+
+  // Gets Logged In User using Auth Token
+  async function getLoggedInUser(): Promise<User | null> {
+    setIsLoading(true);
+    try {
+      let data: User | null = await authApi.getLoggedInUser(accessToken);
+
+      // Not Authenticated - One Refresh Retry
+      if (data == null) {
+        const newToken: string = await refresh();
+        if (newToken) {
+          data = await authApi.getLoggedInUser(newToken);
+        }
+      }
+      setUser(data);
+      return data;
+    } catch {
+      setAccessToken("");
+      setUser(null);
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <AuthContext.Provider
@@ -54,6 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         login,
         logout,
+        getLoggedInUser,
         accessToken,
         isAuthenticated: !!user,
         isLoading,

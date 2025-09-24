@@ -14,9 +14,10 @@ export type AuthContext = {
   accessToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  getLoggedInUser: () => Promise<User | null>;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  refresh: () => Promise<void>; // optional, for manually refreshing tokens
+  refresh: () => Promise<string>; // optional, for manually refreshing tokens
 };
 
 export type Priority = "P1" | "P2" | "P3";

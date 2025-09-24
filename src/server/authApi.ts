@@ -5,6 +5,8 @@ import type { LoginResponse } from "./apiTypes";
 const backendUrl = "http://localhost:8000";
 
 export const authApi = {
+  // Requires no Auth or Refresh token
+  // Obtains no Auth or Refresh token
   register: async (username: string, password: string) => {
     const response = await fetch(`${backendUrl}/users/register/`, {
       method: "POST",
@@ -14,6 +16,8 @@ export const authApi = {
     if (!response.ok) throw new Error("Registration failed");
   },
 
+  // Requires no Auth or Refresh token
+  // Obtains both Auth and Refresh token
   login: async (username: string, password: string): Promise<LoginResponse> => {
     const response = await fetch(`${backendUrl}/auth/login/`, {
       method: "POST",
@@ -25,6 +29,8 @@ export const authApi = {
     return response.json();
   },
 
+  // Requires no Auth or Refresh token
+  // Gets rid of Refresh and assumes the Frontend State wipes the Auth token
   logout: async () => {
     const response = await fetch(`${backendUrl}/auth/logout/`, {
       method: "POST",
@@ -33,6 +39,8 @@ export const authApi = {
     if (!response.ok) throw new Error("Logout failed");
   },
 
+  // Requires the Refresh token
+  // Obtains a new Auth token
   refreshAccessToken: async (): Promise<LoginResponse> => {
     const response = await fetch(`${backendUrl}/auth/refresh/`, {
       method: "POST",
@@ -43,10 +51,18 @@ export const authApi = {
     return response.json();
   },
 
-  getLoggedInUser: async (accessToken: string): Promise<User> => {
+  // Requires the Auth token
+  // Obtains no Auth or Refresh token, but returns user
+  getLoggedInUser: async (accessToken: string): Promise<User | null> => {
+    if (!accessToken) {
+      return null;
+    }
     const response = await fetch(`${backendUrl}/users/me/`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
+    if (response.status === 401) {
+      return null;
+    }
     if (!response.ok) throw new Error("Failed to fetch user");
     return response.json();
   },
