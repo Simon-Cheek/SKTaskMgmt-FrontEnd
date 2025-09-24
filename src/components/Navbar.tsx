@@ -2,7 +2,7 @@
 import { css } from "@emotion/react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { colors } from "../colors";
 import { useAuth } from "../state/AuthContext";
 
@@ -115,66 +115,71 @@ function Navbar() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
-    logout();
+    setIsOpen(false); // close mobile menu first
+    logout(); // clears user / token
     navigate({ to: "/login" });
-    setIsOpen(false);
   };
 
-  // Only render navbar if authenticated
-  if (!isAuthenticated) return null;
-
   return (
-    <nav css={navCss}>
-      <Link
-        to="/"
-        css={linkStyle}
-        style={{ fontSize: "1.5em", fontWeight: "bold" }}
-      >
-        SK
-      </Link>
+    <AnimatePresence>
+      {isAuthenticated && (
+        <motion.nav
+          css={navCss}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+        >
+          <Link
+            to="/"
+            css={linkStyle}
+            style={{ fontSize: "1.5em", fontWeight: "bold" }}
+          >
+            SK
+          </Link>
 
-      {/* Desktop Links */}
-      <div css={linkContainerCss}>
-        <Link to="/archived" css={linkStyle}>
-          Archived
-        </Link>
-        <Link to="/create" css={linkStyle}>
-          Create
-        </Link>
-        <button onClick={handleLogout} css={linkStyle}>
-          Logout
-        </button>
-      </div>
+          {/* Desktop Links */}
+          <div css={linkContainerCss}>
+            <Link to="/archived" css={linkStyle}>
+              Archived
+            </Link>
+            <Link to="/create" css={linkStyle}>
+              Create
+            </Link>
+            <button onClick={handleLogout} css={linkStyle}>
+              Logout
+            </button>
+          </div>
 
-      {/* Mobile Menu Button */}
-      <button css={menuButtonCss} onClick={() => setIsOpen(!isOpen)}>
-        ☰
-      </button>
+          {/* Mobile Menu Button */}
+          <button css={menuButtonCss} onClick={() => setIsOpen(!isOpen)}>
+            ☰
+          </button>
 
-      {/* Mobile Menu */}
-      <motion.div
-        ref={menuRef}
-        css={mobileMenuCss}
-        style={{ overflow: "hidden" }}
-        animate={{
-          scaleY: isOpen ? 1 : 0,
-          opacity: isOpen ? 1 : 0,
-        }}
-        initial={false}
-        transition={{
-          scaleY: { duration: 0.25, ease: "easeInOut" },
-          opacity: { duration: 0.25, ease: "easeInOut" },
-        }}
-      >
-        <Link to="/archived" onClick={() => setIsOpen(false)}>
-          Archived
-        </Link>
-        <Link to="/create" onClick={() => setIsOpen(false)}>
-          Create
-        </Link>
-        <button onClick={handleLogout}>Logout</button>
-      </motion.div>
-    </nav>
+          {/* Mobile Menu */}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                ref={menuRef}
+                css={mobileMenuCss}
+                initial={{ scaleY: 0, opacity: 0 }}
+                animate={{ scaleY: 1, opacity: 1 }}
+                exit={{ scaleY: 0, opacity: 0 }}
+                style={{ overflow: "hidden" }}
+                transition={{ duration: 0.25 }}
+              >
+                <Link to="/archived" onClick={() => setIsOpen(false)}>
+                  Archived
+                </Link>
+                <Link to="/create" onClick={() => setIsOpen(false)}>
+                  Create
+                </Link>
+                <button onClick={handleLogout}>Logout</button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.nav>
+      )}
+    </AnimatePresence>
   );
 }
 

@@ -16,23 +16,15 @@ import type { Task } from "../types"; // adjust import path
 import { useTasks } from "../hooks/useTasks"; // placeholder – you’ll handle this
 import { validatePriority } from "../utils/taskUtils";
 import { parseLocalDate, validateDueDate } from "../utils/dateFormat";
+import { authRouteBeforeLoad } from "../state/auth";
 
 export const Route = createFileRoute("/edit")({
   component: RouteComponent,
 
   // Typing with context is a nightmare
+  // Typing with context is a nightmare
   beforeLoad: async ({ context }: any) => {
-    const auth = context.auth;
-
-    // Wait until auth finishes loading / refreshes
-    if (auth?.isLoading) {
-      await auth.refresh();
-    }
-
-    // Now check authentication
-    if (!auth?.isAuthenticated) {
-      throw redirect({ to: "/login" });
-    }
+    await authRouteBeforeLoad(context);
   },
 });
 

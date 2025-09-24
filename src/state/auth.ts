@@ -1,15 +1,13 @@
-// Shared Auth Route logic
-import { useAuth } from "./AuthContext";
 import { redirect } from "@tanstack/react-router";
 
-export async function requireAuthBeforeLoad() {
-  const { isAuthenticated, refresh } = useAuth();
-
-  // Refresh user data if necessary
-  await refresh();
-
-  if (!isAuthenticated) {
+// AUTH ROUTE HANDLER
+export async function authRouteBeforeLoad(context: any) {
+  const auth = context.auth;
+  if (!auth) {
     throw redirect({ to: "/login" });
   }
-  return null;
+  const user = await auth.getLoggedInUser();
+  if (!user) {
+    throw redirect({ to: "/login" });
+  }
 }

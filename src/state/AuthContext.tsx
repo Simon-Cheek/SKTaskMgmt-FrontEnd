@@ -8,6 +8,7 @@ import {
 import type { User, AuthContext as AuthContextType } from "../types";
 import { authApi } from "../server/authApi";
 import type { LoginResponse } from "../server/apiTypes";
+import { flushSync } from "react-dom";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -17,25 +18,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   // Refresh credentials on load
-  useEffect(() => {
-    const initializeAuth = async () => {
-      setIsLoading(true);
-      try {
-        await refresh();
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    initializeAuth();
-  }, []);
+  // useEffect(() => {
+  //   const initializeAuth = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       await refresh();
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   initializeAuth();
+  // }, []);
 
   // Login user and set tokens/user
   async function login(username: string, password: string) {
     setIsLoading(true);
     try {
       const data: LoginResponse = await authApi.login(username, password);
-      setAccessToken(data.access);
-      setUser(data.user);
+
+      // We want to FORCE react to set the user information before anything else
+      flushSync(() => {
+        setAccessToken(data.access);
+        setUser(data.user);
+      });
     } catch {
       setAccessToken("");
       setUser(null);

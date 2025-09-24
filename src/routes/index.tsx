@@ -8,23 +8,14 @@ import TaskDisplay from "../components/taskComponents/TaskDisplay";
 import { colors } from "../colors";
 import { TaskProvider } from "../state/TaskDisplayContext";
 import { useTasks } from "../hooks/useTasks";
+import { authRouteBeforeLoad } from "../state/auth";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 
   // Typing with context is a nightmare
   beforeLoad: async ({ context }: any) => {
-    const auth = context.auth;
-
-    // Wait until auth finishes loading / refreshes
-    if (auth?.isLoading) {
-      await auth.refresh();
-    }
-
-    // Now check authentication
-    if (!auth?.isAuthenticated) {
-      throw redirect({ to: "/login" });
-    }
+    await authRouteBeforeLoad(context);
   },
 });
 
