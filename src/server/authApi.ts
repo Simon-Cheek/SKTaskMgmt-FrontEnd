@@ -1,8 +1,35 @@
-// api.ts
 import type { User } from "../types";
 import type { LoginResponse } from "./apiTypes";
 
 const backendUrl = "http://localhost:8000";
+
+// Used currently only for the task API
+// Todo: Refactor Auth API to also use this (mainly just the getLoggedInUser function)
+export async function fetchWithAuth(
+  input: RequestInfo | URL,
+  init: RequestInit = {},
+  accessToken: string,
+  refresh: () => Promise<string> // refresh function provided by caller
+): Promise<Response> {
+  const headers = new Headers(init.headers);
+
+  if (accessToken) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+  }
+
+  let response = await fetch(input, { ...init, headers });
+
+  if (response.status === 401) {
+    // Try refreshing once
+    const newToken = await refresh();
+    if (newToken) {
+      headers.set("Authorization", `Bearer ${newToken}`);
+      response = await fetch(input, { ...init, headers });
+    }
+  }
+
+  return response;
+}
 
 export const authApi = {
   // Requires no Auth or Refresh token
