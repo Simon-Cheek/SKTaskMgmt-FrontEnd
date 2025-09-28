@@ -119,14 +119,14 @@ export default function TaskDisplay() {
   const handleComplete = () => {
     if (task) {
       setSelectedTask(null);
-      markAsComplete(task.id);
+      markAsComplete(task.id!);
     }
   };
 
   const handleDelete = () => {
     if (task) {
       setSelectedTask(null);
-      deleteTask(task.id);
+      deleteTask(task.id!);
     }
   };
 

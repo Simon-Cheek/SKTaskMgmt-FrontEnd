@@ -2,7 +2,7 @@
 import type { Task } from "../types";
 import { fetchWithAuth } from "./authApi";
 
-const API_URL = "http://localhost:8000/api/tasks/";
+const API_URL = "http://localhost:8000/tasks/";
 
 export const taskApi = {
   async fetchTasks(
@@ -33,7 +33,7 @@ export const taskApi = {
     refresh: () => Promise<string>
   ): Promise<Task[]> {
     const res = await fetchWithAuth(
-      API_URL + "?status=active",
+      API_URL + "?status=Active",
       {},
       accessToken,
       refresh

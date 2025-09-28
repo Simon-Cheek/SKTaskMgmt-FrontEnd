@@ -28,6 +28,16 @@ export async function fetchWithAuth(
     }
   }
 
+  // If still 401, throw a specific error type
+  if (response.status === 401) {
+    throw new Error("Unauthorized");
+  }
+
+  // Throw for all other HTTP failures too
+  if (!response.ok) {
+    throw new Error(`HTTP error ${response.status}`);
+  }
+
   return response;
 }
 
