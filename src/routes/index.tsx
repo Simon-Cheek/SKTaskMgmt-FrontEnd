@@ -7,8 +7,8 @@ import Separator from "../components/Separator";
 import TaskDisplay from "../components/taskComponents/TaskDisplay";
 import { colors } from "../colors";
 import { TaskProvider } from "../state/TaskDisplayContext";
-import { useTasks } from "../hooks/useTasks";
 import { authRouteBeforeLoad } from "../state/auth";
+import { useActiveTasks } from "../hooks/useActiveTasks";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -58,7 +58,7 @@ const titleDescriptionCss = css`
 `;
 
 function RouteComponent() {
-  const { activeTasks } = useTasks();
+  const { activeTasks } = useActiveTasks();
 
   return (
     <div css={pageWrapperCss}>

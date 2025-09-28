@@ -7,8 +7,8 @@ import Separator from "../components/Separator";
 import TaskDisplay from "../components/taskComponents/TaskDisplay";
 import { colors } from "../colors";
 import { TaskProvider } from "../state/TaskDisplayContext";
-import { useTasks } from "../hooks/useTasks";
 import { authRouteBeforeLoad } from "../state/auth";
+import { useArchivedTasks } from "../hooks/useArchivedTasks";
 
 export const Route = createFileRoute("/archived")({
   component: RouteComponent,
@@ -51,7 +51,7 @@ const titleDisplayCss = css`
 `;
 
 function RouteComponent() {
-  const { archivedTasks } = useTasks();
+  const { archivedTasks } = useArchivedTasks();
 
   return (
     <div css={pageWrapperCss}>

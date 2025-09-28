@@ -89,8 +89,8 @@ function RouteComponent() {
   const navigate = useNavigate();
   const { updateTask } = useTasks();
 
-  const { allTasks: tasks } = useTasks();
-  const task = tasks?.find((t: Task) => t.id === taskId);
+  const { useTaskById } = useTasks();
+  const { data: task, isLoading, error } = useTaskById(taskId);
 
   const [formData, setFormData] = useState({
     taskName: "",

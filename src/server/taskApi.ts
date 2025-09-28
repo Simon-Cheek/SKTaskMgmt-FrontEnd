@@ -108,4 +108,22 @@ export const taskApi = {
     if (!res.ok) throw new Error("Failed to mark task as complete");
     return res.json();
   },
+
+  async fetchTaskById(
+    id: string,
+    accessToken: string,
+    refresh: () => Promise<string>
+  ): Promise<Task | null> {
+    if (!id) {
+      return null;
+    }
+    const res = await fetchWithAuth(
+      `${API_URL}${id}/`,
+      {},
+      accessToken,
+      refresh
+    );
+    if (!res.ok) throw new Error(`Failed to fetch task with id ${id}`);
+    return res.json();
+  },
 };

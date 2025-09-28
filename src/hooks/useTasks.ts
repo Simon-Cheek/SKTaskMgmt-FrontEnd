@@ -1,5 +1,5 @@
 // src/hooks/useTasks.ts
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Task } from "../types";
 import { useAuth } from "../state/AuthContext";
 import { taskApi } from "../server/taskApi";
@@ -19,33 +19,22 @@ export function useTasks() {
         if (err instanceof Error && err.message === "Unauthenticated") {
           await logout();
         }
-        throw err; // rethrow so React Query still sees it as an error
+        throw err;
       }
     };
   };
 
-  // --- Queries ---
-  const allTasksQuery = useQuery<Task[]>({
-    queryKey: ["tasks", "all"],
-    queryFn: () =>
-      withAuthHandling(() => taskApi.fetchTasks(accessToken || "", refresh))(),
-  });
-
-  const activeTasksQuery = useQuery<Task[]>({
-    queryKey: ["tasks", "active"],
-    queryFn: () =>
-      withAuthHandling(() =>
-        taskApi.fetchActiveTasks(accessToken || "", refresh)
-      )(),
-  });
-
-  const archivedTasksQuery = useQuery<Task[]>({
-    queryKey: ["tasks", "archived"],
-    queryFn: () =>
-      withAuthHandling(() =>
-        taskApi.fetchArchivedTasks(accessToken || "", refresh)
-      )(),
-  });
+  // --- Single task query ---
+  function useTaskById(id?: string) {
+    return useQuery<Task | null>({
+      queryKey: ["task", id],
+      queryFn: () =>
+        withAuthHandling(() =>
+          taskApi.fetchTaskById(id || "", accessToken || "", refresh)
+        )(),
+      enabled: !!id,
+    });
+  }
 
   // --- Mutations ---
   const addTaskMutation = useMutation({
@@ -85,17 +74,10 @@ export function useTasks() {
   });
 
   return {
-    // Data
-    allTasks: allTasksQuery.data ?? [],
-    activeTasks: activeTasksQuery.data ?? [],
-    archivedTasks: archivedTasksQuery.data ?? [],
+    // queries
+    useTaskById,
 
-    // Loading states
-    isLoadingAll: allTasksQuery.isLoading,
-    isLoadingActive: activeTasksQuery.isLoading,
-    isLoadingArchived: archivedTasksQuery.isLoading,
-
-    // Mutations
+    // mutations
     addTask: addTaskMutation.mutate,
     deleteTask: deleteTaskMutation.mutate,
     markAsComplete: markAsCompleteMutation.mutate,
