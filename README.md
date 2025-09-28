@@ -20,8 +20,4 @@ More Advanced Pages (V2)
 
 TODO:
 
-- Wire in Backend
-- Persist authenticated sessions using endpoint
-- Configure cookies to be sent to backend domain
-- Make sure ID generation is backend
-- Fix AuthContext
+- Stop /me call if login state is preserved
